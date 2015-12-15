@@ -1,4 +1,4 @@
-
+require 'geocoder'
 require 'rest-client'
 require './api_keys'
 require './models/google_place.rb'
@@ -24,17 +24,30 @@ class LocationCoordinates
     self.new(json['createdAt'], long, lat)
   end
 
-  def initialize(create_date, long, lat)
+  def initialize(create_date, lat, long)
     @create_date = create_date
-    @long = long
-    @lat = lat    
+    @lat = lat
+    @long = long    
+  end
+  
+  def datetime
+    DateTime.parse(@create_date)
   end
   
   def coordinates_as_string
-    return "#{@long},#{@lat}"    
+    return "#{@lat},#{@long}"    
   end
   
   def get_places
-    GooglePlace.fetch_places_for_coordinates(@long, @lat)
+    GooglePlace.fetch_places_for_coordinates(@lat, @long)
   end
+  
+  def distance_from_location(other_location)
+    Geocoder::Calculations.distance_between(self.coordinates_as_string, other_location.coordinates_as_string)    
+  end
+  
+  def time_difference_between_location(other_location)
+    # returns the time difference in minutes
+    ((self.datetime - other_location.datetime) * (24 * 60)).to_i
+  end  
 end

@@ -9,13 +9,13 @@ class GooglePlace
   
   attr_accessor :name 
 
-  def self.url_for_long_lat(long, lat)
-    location_str = [long, lat].join(',')
+  def self.url_for_lat_long(lat, long)
+    location_str = [lat, long].join(',')
     GOOGLE_PLACES_BASE_URL + "?location=#{location_str}&radius=#{DEFAULT_RADIUS}&key=#{GOOGLE_PLACES_CLIENT_KEY}"
   end
 
-  def self.fetch_places_for_coordinates(long, lat)
-    response = RestClient.get(self.url_for_long_lat(long, lat))
+  def self.fetch_places_for_coordinates(lat, long)
+    response = RestClient.get(self.url_for_lat_long(lat, long))
     
     JSON.parse(response)['results'].map do |json_google_place|
       self.init_from_json(json_google_place)

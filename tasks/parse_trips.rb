@@ -1,0 +1,21 @@
+require 'pry'
+
+require 'geocoder'
+
+
+
+
+require './models/location_coordinates.rb'
+require './models/trip.rb'
+
+
+locs = LocationCoordinates.fetch_all
+
+trip = Trip.new(locs)
+
+trip.google_maps_url
+
+
+
+
+binding.pry
