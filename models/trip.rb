@@ -4,11 +4,47 @@ require 'pry'
 
 class Trip
   MAX_POINTS_PER_GOOGLE_MAP = 20
+  MAX_TIME_DIFF_BETWEEN_PINGS = 15  # if the last ping was more than 15 mins, it's probably a different trip
+  
+  attr_accessor :locations, :end
+    
+    
+    
+  def self.generate_from_locations(locations)
+    trips = []
+    
+    # binding.pry
+    
+    locations.each do |location|
+      if trips.length > 0 and trips.last.end.time_difference_between_location(location) < MAX_TIME_DIFF_BETWEEN_PINGS
+        trips.last.add_location(location)
+      else
+        trips << self.new([location])
+      end
+    end
+    
+    return trips
+  end
     
   def initialize(locations)
     @locations = locations
     @start = locations.first
     @end = locations.last    
+  end
+  
+  def to_json
+    {
+      start: @start.to_json,
+      end: @end.to_json,
+      total_time: self.total_time,
+      total_distance: self.total_distance,
+      locations: locations.map {|location| location.to_json}
+    }.to_json  # TODO need to do this on the location to json
+  end
+  
+  def add_location(location)
+    @locations << location
+    @end = location
   end
   
   def total_time
@@ -31,6 +67,7 @@ class Trip
   end
 
   def create_url_from_locations(locations)
+    # TODO this can be on itself now, dont need to pass em in, or it could be a class method
     start_coordinates = @start.coordinates_as_string
     destinations_string = locations.map do |location|
       location.coordinates_as_string

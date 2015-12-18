@@ -11,9 +11,13 @@ require './models/trip.rb'
 
 locs = LocationCoordinates.fetch_all
 
-trip = Trip.new(locs)
+trips = Trip.generate_from_locations(locs)
 
-trip.google_maps_url
+
+
+
+
+# trip.google_maps_url
 
 
 

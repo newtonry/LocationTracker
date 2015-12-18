@@ -5,7 +5,7 @@ require './models/google_place.rb'
 
 
 class LocationCoordinates
-  PARSE_BASE_JS_URL = "https://#{PARSE_APP_ID}:javascript-key=#{PARSE_JS_KEY}@api.parse.com/1/classes/#{self.name}"
+  PARSE_BASE_JS_URL = "https://#{PARSE_APP_ID}:javascript-key=#{PARSE_JS_KEY}@api.parse.com/1/classes/#{self.name}?limit=1000"
   
   def self.url    
     return PARSE_BASE_JS_URL
@@ -30,6 +30,13 @@ class LocationCoordinates
     @long = long    
   end
   
+  def to_json
+    {
+      coordinates: coordinates_as_string,
+      create_date: @create_date
+    }
+  end
+  
   def datetime
     DateTime.parse(@create_date)
   end
@@ -48,6 +55,7 @@ class LocationCoordinates
   
   def time_difference_between_location(other_location)
     # returns the time difference in minutes
-    ((self.datetime - other_location.datetime) * (24 * 60)).to_i
-  end  
+    ((self.datetime - other_location.datetime) * (24 * 60)).abs
+  end
+  
 end
