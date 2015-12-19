@@ -1,6 +1,7 @@
 
 require 'json'
 require 'sinatra'
+require 'sinatra/partial'
 require './api_keys.rb'
 require './models/location_coordinates'
 require './models/trip'
@@ -9,6 +10,8 @@ require './models/trip'
 require 'pry'
 
 set :server, 'webrick'
+set :partial_template_engine, :erb
+
 
 get '/' do
   

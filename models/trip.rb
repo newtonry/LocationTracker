@@ -13,8 +13,6 @@ class Trip
   def self.generate_from_locations(locations)
     trips = []
     
-    # binding.pry
-    
     locations.each do |location|
       if trips.length > 0 and trips.last.end.time_difference_between_location(location) < MAX_TIME_DIFF_BETWEEN_PINGS
         trips.last.add_location(location)
@@ -47,7 +45,7 @@ class Trip
     @end = location
   end
   
-  def total_time
+  def total_time    
     @end.time_difference_between_location(@start)  
   end
 

@@ -55,7 +55,6 @@ class LocationCoordinates
   
   def time_difference_between_location(other_location)
     # returns the time difference in minutes
-    ((self.datetime - other_location.datetime) * (24 * 60)).abs
+    Integer((self.datetime - other_location.datetime) * (24 * 60)).abs
   end
-  
 end

@@ -6,9 +6,11 @@
       #map { height: 100%; }
     </style>
 
-	
+	<%= erb :"jst/_trips_home" %>
   </head>
   <body>
+	  
+	<div id="main-container"></div>
     <div id="map"></div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -16,60 +18,127 @@
     <script src="./external/backbone-min.js"></script>
 
 
+<script type="text/javascript">
 
-    <script type="text/javascript">
-
-var map;
-
-function initMap() {	
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: -34.397, lng: 150.644},
-    zoom: 8
-  });
-
-  var myLatLng = {lat: -25.363, lng: 131.044};
-
-
-  var marker = new google.maps.Marker({
-    position: myLatLng,
-    map: map,
-    title: 'Hello World!'
-  });
-}
+// var map;
+//
+// function initMap() {
+//   map = new google.maps.Map(document.getElementById('map'), {
+//     center: {lat: -34.397, lng: 150.644},
+//     zoom: 8
+  // });
+//
+//   var myLatLng = {lat: -25.363, lng: 131.044};
+//
+//
+//   var marker = new google.maps.Marker({
+//     position: myLatLng,
+//     map: map,
+//     title: 'Hello World!'
+//   });
+// }
 
 $(document).ready(function() {
+
+	var LocationCoordinates = Backbone.Model.extend({
+		toCoordinateString: function() {
+			return [this.get('lat'), this.get('long')].join(',');
+		},
+		toGoogleMarker: function() {}
+	},{
+		fromCoordinateStringAndDate: function(coordinateString, date) {
+			var parsedCoordinates = coordinateString.split(',');
+		
+			return new LocationCoordinates({
+				lat: parseFloat(parsedCoordinates[0]),
+				long: parseFloat(parsedCoordinates[1]),
+				time: new Date(date)
+			});
+		}
+	});
+
 	var Trip = Backbone.Model.extend({
 		parse: function(response) {
-			debugger
+			var locations = _.map(response.locations, function(location) {
+				return LocationCoordinates.fromCoordinateStringAndDate(location.coordinates, location.create_date)
+			});
+
+			response.locations = locations;
+			response.start = LocationCoordinates.fromCoordinateStringAndDate(response.start.coordinates, response.start.create_date)
+			response.end = LocationCoordinates.fromCoordinateStringAndDate(response.end.coordinates, response.end.create_date)
+			return response;
 		}
-		
 	});
 	
 	var TripCollection = Backbone.Collection.extend({
 		model: Trip,
 		url: '/api/trips/'
 	});
-
-
-
-	var trips = new TripCollection();
-	trips.fetch({
-		success: function(response) {
-			debugger
-		},		
+	
+	var TripListItemView = Backbone.View.extend({
+		render: function() {
+			this.$el.empty();
+			this.$el.append(
+				'<li>' +
+				'Trip: ' +
+				this.model.get('start').toCoordinateString() +
+				' to ' +
+				this.model.get('end').toCoordinateString() +
+				' - total time: ' +
+				this.model.get('total_time') + 
+				' mins' +
+				'</li>'
+			)
+			
+			return this;
+		}
 	});
+	
+	
+	var TripsHomeView = Backbone.View.extend({
+		template: _.template($("#trips-home").html()),
+		
+		initialize: function() {
+			this.trips = new TripCollection();
+			this.trips.fetch({
+				success: this.render.bind(this),		
+			});
+		},
+		render: function() {
+			this.$el.empty().append(
+				this.template()
+			);
+	
+			var self = this;
+			this.trips.each(function(trip) {
+				var tripListItemView = new TripListItemView({
+					model: trip
+				});
+				
+				self.$el.append(tripListItemView.render().$el);
+			});		
+		}
+	});
+	
 
-	function doSomethingWithTrips() {
-		// debugger
-	}
+
+
+
+
+	var tripsHomeView = new TripsHomeView({
+		el: $('#main-container')
+	});
+	
+	
+	
+	
+	
 });
 
 
 
 
     </script>
-    <script async defer
-      src="https://maps.googleapis.com/maps/api/js?key=<%= google_maps_api_key %>&callback=initMap">
-    </script>
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= google_maps_api_key %>&callback="></script>
   </body>
 </html>
