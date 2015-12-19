@@ -11,6 +11,11 @@ require './models/trip.rb'
 
 locs = LocationCoordinates.fetch_all
 
+
+
+
+
+
 trips = Trip.generate_from_locations(locs)
 
 

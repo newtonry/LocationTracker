@@ -32,14 +32,14 @@ class Trip
     @end = locations.last    
   end
   
-  def to_json
+  def to_hash
     {
-      start: @start.to_json,
-      end: @end.to_json,
+      start: @start.to_hash,
+      end: @end.to_hash,
       total_time: self.total_time,
-      total_distance: self.total_distance,
-      locations: locations.map {|location| location.to_json}
-    }.to_json  # TODO need to do this on the location to json
+      # total_distance: self.total_distance,
+      locations: locations.map {|location| location.to_hash}
+    }
   end
   
   def add_location(location)

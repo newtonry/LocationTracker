@@ -5,17 +5,23 @@
       html, body { height: 100%; margin: 0; padding: 0; }
       #map { height: 100%; }
     </style>
+
+	
   </head>
   <body>
     <div id="map"></div>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script src="./external/underscore-min.js"></script>
+    <script src="./external/backbone-min.js"></script>
+
+
+
     <script type="text/javascript">
 
 var map;
 
-function initMap() {
-	
-	
-	
+function initMap() {	
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: -34.397, lng: 150.644},
     zoom: 8
@@ -30,6 +36,35 @@ function initMap() {
     title: 'Hello World!'
   });
 }
+
+$(document).ready(function() {
+	var Trip = Backbone.Model.extend({
+		parse: function(response) {
+			debugger
+		}
+		
+	});
+	
+	var TripCollection = Backbone.Collection.extend({
+		model: Trip,
+		url: '/api/trips/'
+	});
+
+
+
+	var trips = new TripCollection();
+	trips.fetch({
+		success: function(response) {
+			debugger
+		},		
+	});
+
+	function doSomethingWithTrips() {
+		// debugger
+	}
+});
+
+
 
 
     </script>

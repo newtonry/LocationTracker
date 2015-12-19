@@ -30,7 +30,7 @@ class LocationCoordinates
     @long = long    
   end
   
-  def to_json
+  def to_hash
     {
       coordinates: coordinates_as_string,
       create_date: @create_date

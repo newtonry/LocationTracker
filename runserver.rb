@@ -1,5 +1,5 @@
 
-
+require 'json'
 require 'sinatra'
 require './api_keys.rb'
 require './models/location_coordinates'
@@ -25,11 +25,15 @@ end
 
 
 get '/api/trips/' do
+  content_type :json
   
+
+
+
   locs = LocationCoordinates.fetch_all
   trips = Trip.generate_from_locations(locs)
-  
+
   trips.map do |trip|
-    trip.to_json
-  end
+    trip.to_hash
+  end.to_json
 end
