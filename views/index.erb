@@ -9,40 +9,39 @@
 	<%= erb :"jst/_trips_home" %>
   </head>
   <body>
-	  
-	<div id="main-container"></div>
-    <div id="map"></div>
+	<h2 class="col-md-12">Trips</h2>
+			
+	<div id="main-container" class="pull-left col-md-8"></div>
+    <div id="map" class="pull-left col-md-4"></div>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 	<script src="./external/underscore-min.js"></script>
     <script src="./external/backbone-min.js"></script>
 
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+
 
 <script type="text/javascript">
 
-// var map;
-//
-// function initMap() {
-//   map = new google.maps.Map(document.getElementById('map'), {
-//     center: {lat: -34.397, lng: 150.644},
-//     zoom: 8
-  // });
-//
-//   var myLatLng = {lat: -25.363, lng: 131.044};
-//
-//
-//   var marker = new google.maps.Marker({
-//     position: myLatLng,
-//     map: map,
-//     title: 'Hello World!'
-//   });
-// }
-
 $(document).ready(function() {
-
+	
+	// Clashes with erb otherwise
+	_.templateSettings = {
+	    interpolate: /\{\{\=(.+?)\}\}/g,
+	    evaluate: /\{\{(.+?)\}\}/g
+	};
+	
 	var LocationCoordinates = Backbone.Model.extend({
 		toCoordinateString: function() {
-			return [this.get('lat'), this.get('long')].join(',');
+			return [this.get('lat'), this.get('lng')].join(',');
 		},
 		toGoogleMarker: function() {}
 	},{
@@ -51,7 +50,7 @@ $(document).ready(function() {
 		
 			return new LocationCoordinates({
 				lat: parseFloat(parsedCoordinates[0]),
-				long: parseFloat(parsedCoordinates[1]),
+				lng: parseFloat(parsedCoordinates[1]),
 				time: new Date(date)
 			});
 		}
@@ -63,7 +62,7 @@ $(document).ready(function() {
 				return LocationCoordinates.fromCoordinateStringAndDate(location.coordinates, location.create_date)
 			});
 
-			response.locations = locations;
+			response.locations = new Backbone.Collection(locations);
 			response.start = LocationCoordinates.fromCoordinateStringAndDate(response.start.coordinates, response.start.create_date)
 			response.end = LocationCoordinates.fromCoordinateStringAndDate(response.end.coordinates, response.end.create_date)
 			return response;
@@ -76,24 +75,51 @@ $(document).ready(function() {
 	});
 	
 	var TripListItemView = Backbone.View.extend({
+		events: {
+			'click .view-map': 'viewMap'
+		},
+		tagName: 'tr',
+		template: _.template($("#trips-home-table-row").html()),
+		viewMap: function() {
+			this.trigger('viewMap', this.model);
+		},
+		
 		render: function() {
 			this.$el.empty();
 			this.$el.append(
-				'<li>' +
-				'Trip: ' +
-				this.model.get('start').toCoordinateString() +
-				' to ' +
-				this.model.get('end').toCoordinateString() +
-				' - total time: ' +
-				this.model.get('total_time') + 
-				' mins' +
-				'</li>'
-			)
+				this.template({
+					startString: this.model.get('start').toCoordinateString(),
+					endString: this.model.get('end').toCoordinateString(),
+					totalTime: this.model.get('total_time')
+				})
+			);
 			
 			return this;
 		}
 	});
 	
+	var TripMapView = Backbone.View.extend({
+		render: function() {
+			var map = new google.maps.Map(document.getElementById('map'), {
+				center: {
+					lat: this.model.get('start').get('lat'),
+					lng: this.model.get('start').get('lng')
+				},
+				zoom: 15
+		  });
+		  
+		  this.model.get('locations').each(function(location) {
+			  new google.maps.Marker({
+	  		    position: {
+	  		    	lat: location.get('lat'),
+					lng: location.get('lng')
+	  		    },
+	  		    map: map,
+	  		    title: 'A point'
+	  		  });
+		  });
+		}
+	});
 	
 	var TripsHomeView = Backbone.View.extend({
 		template: _.template($("#trips-home").html()),
@@ -104,6 +130,12 @@ $(document).ready(function() {
 				success: this.render.bind(this),		
 			});
 		},
+		
+		changeMap: function(selectedTrip) {
+			this.selectedTrip = selectedTrip;
+			this.render();
+		},
+		
 		render: function() {
 			this.$el.empty().append(
 				this.template()
@@ -114,9 +146,19 @@ $(document).ready(function() {
 				var tripListItemView = new TripListItemView({
 					model: trip
 				});
+
+				self.$('.trips-table tbody').append(tripListItemView.render().$el);
+				self.listenTo(tripListItemView, 'viewMap', self.changeMap)
+			});
+			
+			if (this.selectedTrip) {
+				this.mapView = new TripMapView({
+					model: this.selectedTrip
+				});
+				this.mapView.render();
 				
-				self.$el.append(tripListItemView.render().$el);
-			});		
+			}
+			
 		}
 	});
 	
