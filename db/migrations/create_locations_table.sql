@@ -1,7 +1,17 @@
 CREATE TABLE location_coordinates(
 	id INTEGER,
+	parse_id TEXT,
 	lat REAL,
 	lng REAL,
-	time_visited NUMERIC,
+	time_visited TEXT,
 	PRIMARY KEY(id)
 );
+
+
+
+-- CREATE TABLE users(
+-- 	id INTEGER,
+-- 	name TEXT,
+-- 	occupation TEXT,
+-- 	PRIMARY KEY(id)
+-- );

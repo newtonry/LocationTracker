@@ -59,12 +59,12 @@ $(document).ready(function() {
 	var Trip = Backbone.Model.extend({
 		parse: function(response) {
 			var locations = _.map(response.locations, function(location) {
-				return LocationCoordinates.fromCoordinateStringAndDate(location.coordinates, location.create_date)
+				return LocationCoordinates.fromCoordinateStringAndDate(location.coordinates, location.time_visited)
 			});
 
 			response.locations = new Backbone.Collection(locations);
-			response.start = LocationCoordinates.fromCoordinateStringAndDate(response.start.coordinates, response.start.create_date)
-			response.end = LocationCoordinates.fromCoordinateStringAndDate(response.end.coordinates, response.end.create_date)
+			response.start = LocationCoordinates.fromCoordinateStringAndDate(response.start.coordinates, response.start.time_visited)
+			response.end = LocationCoordinates.fromCoordinateStringAndDate(response.end.coordinates, response.end.time_visited)
 			return response;
 		}
 	});

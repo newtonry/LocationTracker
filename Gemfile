@@ -1,3 +1,4 @@
+gem 'activerecord'
 gem 'geocoder'
 gem 'rest-client'
 gem 'sinatra'

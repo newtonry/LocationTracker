@@ -15,25 +15,18 @@ set :partial_template_engine, :erb
 
 get '/' do
   
-  locs = LocationCoordinates.fetch_all
+  locs = LocationCoordinates.fetch_all_from_parse
   
   # binding.pry
   
   erb :index, :locals => {:google_maps_api_key => GOOGLE_MAPS_JS_API_KEY}
-  
-  
-  
-  # File.read(File.join('public', 'index.html'))
 end
 
 
 get '/api/trips/' do
   content_type :json
-  
 
-
-
-  locs = LocationCoordinates.fetch_all
+  locs = LocationCoordinates.fetch_all_from_parse
   trips = Trip.generate_from_locations(locs)
 
   trips.map do |trip|
