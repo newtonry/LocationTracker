@@ -9,6 +9,15 @@ CREATE TABLE location_coordinates(
 
 
 
+CREATE TABLE google_place(
+	id INTEGER,
+	PRIMARY KEY(id)
+);
+
+
+
+
+
 -- CREATE TABLE users(
 -- 	id INTEGER,
 -- 	name TEXT,

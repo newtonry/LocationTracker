@@ -6,7 +6,7 @@ class Trip
   MAX_POINTS_PER_GOOGLE_MAP = 20
   MAX_TIME_DIFF_BETWEEN_PINGS = 15  # if the last ping was more than 15 mins, it's probably a different trip
   
-  attr_accessor :locations, :end
+  # attr_accessor :locations, :end
     
     
     

@@ -7,6 +7,10 @@ require './models/google_place.rb'
 
 
 class LocationCoordinates < ActiveRecord::Base
+
+  has_and_belongs_to_many :google_places
+  has_many :types, through: :google_places
+  
   
   PARSE_BASE_JS_URL = "https://#{PARSE_APP_ID}:javascript-key=#{PARSE_JS_KEY}@api.parse.com/1/classes/#{self.name}?limit=1000"
   PARSE_LIMIT = 1000  # TODO should go in constants file
@@ -43,6 +47,10 @@ class LocationCoordinates < ActiveRecord::Base
     )
   end
 
+  # def types
+  #
+  # end
+  
   def to_hash
     {
       coordinates: coordinates_as_string,  # TODO should just show both coords separately
@@ -58,8 +66,9 @@ class LocationCoordinates < ActiveRecord::Base
     return "#{self.lat},#{self.lng}"    
   end
   
-  def get_places
-    GooglePlace.fetch_places_for_coordinates(self.lat, self.lng)
+  def fetch_and_create_places
+    self.google_places += GooglePlace.fetch_and_create_places_for_coordinates(self.lat, self.lng)
+    self.save()
   end
   
   def distance_from_location(other_location)
