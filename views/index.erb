@@ -7,6 +7,7 @@
     </style>
 
 	<%= erb :"jst/_trips_home" %>
+	<%= erb :"jst/_trip_individual" %>
   </head>
   <body>
 	<h2 class="col-md-12">Trips</h2>
@@ -51,6 +52,10 @@ $(document).ready(function() {
 	});
 
 	var Trip = Backbone.Model.extend({
+		url: function() {
+			return '/api/trips/' + this.get('id') + '/';
+		},
+
 		parse: function(json) {
 			var location_coordinates = _.map(json.location_coordinates, function(location_json) {
 				return new LocationCoordinates(location_json, {parse: true})
@@ -150,16 +155,92 @@ $(document).ready(function() {
 					model: this.selectedTrip
 				});
 				this.mapView.render();
-				
 			}
-			
 		}
 	});
 
 
-	var tripsHomeView = new TripsHomeView({
-		el: $('#main-container')
+
+	var TripIndividualView = Backbone.View.extend({
+		template: _.template($('#trip-location-coordinates-table').html()), // TODO the main template shouldn't be a table in the long run
+		
+		initialize: function(options) {
+			this.model = new Trip({
+				id: options.id
+			});
+			
+			this.model.fetch({
+				success: this.render.bind(this)
+			});
+			
+		},
+		
+		render: function() {
+			this.$el.empty();
+			this.$el.append(this.template());
+			var self = this;
+
+			this.model.get('location_coordinates').each(function(location) {
+				var locationCoordinatesRow = new LocationCoordinatesRow({
+					model: location
+				});
+				
+				this.$('.location-coordinates-table tbody').append(locationCoordinatesRow.render().$el);
+			});
+
+			this.mapView = new TripMapView({
+				model: this.model
+			});
+			this.mapView.render();			
+
+			return this;
+		}
 	});
+	
+	var LocationCoordinatesRow = Backbone.View.extend({
+		template: _.template($('#trip-location-coordinates-row').html()),
+		render: function() {
+			this.$el.empty().append(this.template({
+				lat: this.model.get('lat'),
+				lng: this.model.get('lng')
+			}));
+			
+			return this;
+		}
+	});
+	
+
+
+	var LocationTrackerRouter = Backbone.Router.extend({
+	    routes: {
+	        "trips/:id": "trip",
+	        "": "index"
+	    },
+	    index: function() {
+			var tripsHomeView = new TripsHomeView({
+				el: $('#main-container')
+			});
+	    },
+	    trip: function(id) {
+			var tripIndividualView = new TripIndividualView({
+				el: $('#main-container'),
+				id: id
+			});
+	    },
+	});
+	
+	router = new LocationTrackerRouter();
+	
+	// router.on('route:archive', function() {
+	// 	debugger
+	//
+	//
+	// })
+	
+	
+	Backbone.history.start();
+
+
 	
 });
 

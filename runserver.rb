@@ -26,6 +26,12 @@ get '/api/trips/' do
   Trip.includes(:location_coordinates).all.to_json(:include => :location_coordinates)
 end
 
+get '/api/trips/:id/' do
+  content_type :json
+  Trip.includes(:location_coordinates).find(params['id']).to_json(:include => :location_coordinates)
+end
+
+
 get '/api/types/' do
   content_type :json
   Type.all.to_json
