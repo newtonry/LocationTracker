@@ -2,6 +2,7 @@ require 'pry'
 require 'geocoder'
 require './models/location_coordinates.rb'
 require './models/trip.rb'
+require './models/type.rb'
 
 
 def generate_from_locations(locations)
@@ -37,4 +38,3 @@ binding.pry
 
 
 
-binding.pry

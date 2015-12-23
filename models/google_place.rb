@@ -1,20 +1,18 @@
-require './db/environment.rb'  # need for db settings. eventually want to auto-load this probably
+require './db/environment'  # need for db settings. eventually want to auto-load this probably
 
 require 'json'
 require 'rest-client'
 require './api_keys'
+require './models/type'
 
 
-class Type < ActiveRecord::Base
-  has_and_belongs_to_many :google_places
-end  
 
 def type_find_or_create_by_name(name)
   # Have to do this b/c the activerecord association means we cant reference the type class? wtf?
   Type.find_or_create_by(name: name)
 end
 
-class GooglePlace  < ActiveRecord::Base
+class GooglePlace < ActiveRecord::Base
   GOOGLE_PLACES_BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
   DEFAULT_RADIUS = 10
 

@@ -11,3 +11,5 @@ def migrate_from_parse_to_sqlite
 
   p "Migration of all Parse records complete. There are now #{LocationCoordinates.count} LocationCoordinates total."
 end
+
+migrate_from_parse_to_sqlite

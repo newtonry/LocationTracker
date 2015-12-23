@@ -3,9 +3,10 @@ require 'json'
 require 'sinatra'
 require 'sinatra/partial'
 require './api_keys.rb'
+require './models/google_place'
 require './models/location_coordinates'
 require './models/trip'
-
+require './models/type'
 
 require 'pry'
 
@@ -23,6 +24,13 @@ get '/' do
 end
 
 
+get '/api/google_places/' do
+  content_type :json
+  GooglePlace.all.map do |type|
+    type
+  end.to_json
+end
+
 get '/api/trips/' do
   content_type :json
 
@@ -33,3 +41,21 @@ get '/api/trips/' do
     trip.to_hash
   end.to_json
 end
+
+get '/api/types/' do
+  content_type :json
+  Type.all.map do |type|
+    type
+  end.to_json
+end
+
+
+
+
+
+
+
+
+
+
+
