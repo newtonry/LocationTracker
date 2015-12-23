@@ -40,32 +40,26 @@ $(document).ready(function() {
 	};
 	
 	var LocationCoordinates = Backbone.Model.extend({
+		parse: function(json) {
+			json.time_visited = new Date(json['time_visited']);
+			return json;
+		},
 		toCoordinateString: function() {
 			return [this.get('lat'), this.get('lng')].join(',');
 		},
 		toGoogleMarker: function() {}
-	},{
-		fromCoordinateStringAndDate: function(coordinateString, date) {
-			var parsedCoordinates = coordinateString.split(',');
-		
-			return new LocationCoordinates({
-				lat: parseFloat(parsedCoordinates[0]),
-				lng: parseFloat(parsedCoordinates[1]),
-				time: new Date(date)
-			});
-		}
 	});
 
 	var Trip = Backbone.Model.extend({
-		parse: function(response) {
-			var locations = _.map(response.locations, function(location) {
-				return LocationCoordinates.fromCoordinateStringAndDate(location.coordinates, location.time_visited)
+		parse: function(json) {
+			var location_coordinates = _.map(json.location_coordinates, function(location_json) {
+				return new LocationCoordinates(location_json, {parse: true})
 			});
 
-			response.locations = new Backbone.Collection(locations);
-			response.start = LocationCoordinates.fromCoordinateStringAndDate(response.start.coordinates, response.start.time_visited)
-			response.end = LocationCoordinates.fromCoordinateStringAndDate(response.end.coordinates, response.end.time_visited)
-			return response;
+			json.location_coordinates = new Backbone.Collection(location_coordinates);			
+			json.start = json.location_coordinates.first();
+			json.finish = json.location_coordinates.last()
+			return json;
 		}
 	});
 	
@@ -89,7 +83,7 @@ $(document).ready(function() {
 			this.$el.append(
 				this.template({
 					startString: this.model.get('start').toCoordinateString(),
-					endString: this.model.get('end').toCoordinateString(),
+					finishString: this.model.get('finish').toCoordinateString(),
 					totalTime: this.model.get('total_time')
 				})
 			);
@@ -108,7 +102,7 @@ $(document).ready(function() {
 				zoom: 15
 		  });
 		  
-		  this.model.get('locations').each(function(location) {
+		  this.model.get('location_coordinates').each(function(location) {
 			  new google.maps.Marker({
 	  		    position: {
 	  		    	lat: location.get('lat'),
@@ -161,19 +155,11 @@ $(document).ready(function() {
 			
 		}
 	});
-	
-
-
-
 
 
 	var tripsHomeView = new TripsHomeView({
 		el: $('#main-container')
 	});
-	
-	
-	
-	
 	
 });
 

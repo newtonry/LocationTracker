@@ -7,12 +7,7 @@ CREATE TABLE location_coordinates(
 	PRIMARY KEY(id)
 );
 
-
-
-CREATE TABLE google_place(
-	id INTEGER,
-	PRIMARY KEY(id)
-);
+ALTER TABLE location_coordinates ADD COLUMN trip_id INTEGER;
 
 
 

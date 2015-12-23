@@ -8,6 +8,7 @@ require './models/google_place.rb'
 
 class LocationCoordinates < ActiveRecord::Base
 
+  belongs_to :trip
   has_and_belongs_to_many :google_places
   has_many :types, through: :google_places
   
@@ -46,10 +47,6 @@ class LocationCoordinates < ActiveRecord::Base
       time_visited: DateTime.parse(json['createdAt'])
     )
   end
-
-  # def types
-  #
-  # end
   
   def to_hash
     {
@@ -77,6 +74,6 @@ class LocationCoordinates < ActiveRecord::Base
   
   def time_difference_between_location(other_location)
     # returns the time difference in minutes
-    Integer((self.datetime - other_location.datetime) * (24 * 60)).abs
+    Float((self.datetime - other_location.datetime) * (24 * 60)).abs
   end
 end
