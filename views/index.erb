@@ -40,9 +40,35 @@ $(document).ready(function() {
 	    evaluate: /\{\{(.+?)\}\}/g
 	};
 	
+	
+	var Type = Backbone.Model.extend({});
+	var TypesCollection = Backbone.Collection.extend({
+		model: Type,
+		getNamesString: function() {
+			return this.map(function(type) {
+				return type.get('name');
+			}).join(', ');
+		}
+	});
+
+	var GooglePlace = Backbone.Model.extend({});
+	var GooglePlacesCollection = Backbone.Collection.extend({
+		model: GooglePlace,
+		getNamesString: function() {
+			return this.map(function(googlePlace) {
+				return googlePlace.get('name');
+			}).join(', ');
+		}
+		
+	});
+	
+	
 	var LocationCoordinates = Backbone.Model.extend({
 		parse: function(json) {
 			json.time_visited = new Date(json['time_visited']);
+			
+			json.google_places = new GooglePlacesCollection(json.google_places, {parse: true})
+			json.types = new TypesCollection(json.types, {parse: true})
 			return json;
 		},
 		toCoordinateString: function() {
@@ -104,7 +130,7 @@ $(document).ready(function() {
 					lat: this.model.get('start').get('lat'),
 					lng: this.model.get('start').get('lng')
 				},
-				zoom: 15
+				zoom: 13
 		  });
 		  
 		  this.model.get('location_coordinates').each(function(location) {
@@ -198,18 +224,13 @@ $(document).ready(function() {
 	});
 	
 	var LocationCoordinatesRow = Backbone.View.extend({
+		tagName: 'tr',
 		template: _.template($('#trip-location-coordinates-row').html()),
 		render: function() {
-			this.$el.empty().append(this.template({
-				lat: this.model.get('lat'),
-				lng: this.model.get('lng')
-			}));
-			
+			this.$el.empty().append(this.template(this.model.toJSON()));
 			return this;
 		}
 	});
-	
-
 
 	var LocationTrackerRouter = Backbone.Router.extend({
 	    routes: {
@@ -231,17 +252,7 @@ $(document).ready(function() {
 	
 	router = new LocationTrackerRouter();
 	
-	// router.on('route:archive', function() {
-	// 	debugger
-	//
-	//
-	// })
-	
-	
 	Backbone.history.start();
-
-
-	
 });
 
 

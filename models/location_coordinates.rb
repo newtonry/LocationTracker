@@ -3,7 +3,8 @@ require './db/environment.rb'  # need for db settings. eventually want to auto-l
 require 'geocoder'
 require 'rest-client'
 require './api_keys'
-require './models/google_place.rb'
+require './utils'
+require './models/google_place'
 
 
 class LocationCoordinates < ActiveRecord::Base
@@ -68,8 +69,17 @@ class LocationCoordinates < ActiveRecord::Base
     self.save()
   end
   
+  def is_the_same_location(other_location)
+    # Should we assume that it's the same location if it's within the same 100 meters?
+    self.distance_from_location(other_location) < 100
+  end
+  
+  
   def distance_from_location(other_location)
-    Geocoder::Calculations.distance_between(self.coordinates_as_string, other_location.coordinates_as_string)    
+    distance_between_locations([self.lat, self.lng], [other_location.lat, other_location.lng])
+    
+    # Not using Geocoder for now, as it blows up Google API limits
+    # Geocoder::Calculations.distance_between(self.coordinates_as_string, other_location.coordinates_as_string)
   end
   
   def time_difference_between_location(other_location)

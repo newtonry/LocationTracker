@@ -1,16 +1,22 @@
 <script type="text/html" id="trip-location-coordinates-table">
      <table class="table location-coordinates-table">
 		<thead>
-			<tr class='col-md-8'>
-				<th class='col-md-3'>Lat</th>
-				<th class='col-md-3'>Long</th> 
+			<tr>
+				<th class='col-md-2'>Lat</th>
+				<th class='col-md-2'>Long</th>
+				<th class='col-md-2'>Time Visited</th>
+				<th class='col-md-2'>Places</th>
+				<th class='col-md-2'>Types</th>
 			</tr>				
 		</thead>
-		<tbody class='col-md-8'></tbody>
+		<tbody></tbody>
      </table>
 </script>
 
 <script type="text/html" id="trip-location-coordinates-row">
-	<td class='col-md-3'>{{= lat }}</td>
-	<td class='col-md-3'>{{= lng }}</td> 
+	<td class='col-md-2'>{{= lat }}</td>
+	<td class='col-md-2'>{{= lng }}</td>
+	<td class='col-md-2'>{{= time_visited }}</td>
+	<td class='col-md-2'>{{= google_places.getNamesString() }}</td>
+	<td class='col-md-2'>{{= types.getNamesString() }}</td>
 </script>

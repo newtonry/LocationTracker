@@ -9,7 +9,6 @@ class Trip < ActiveRecord::Base
   has_many :location_coordinates, class_name: 'LocationCoordinates'
   
   
-  # attr_accessor :locations, :end
   def self.create_from_locations(locations)
     trips = []
 
@@ -53,6 +52,29 @@ class Trip < ActiveRecord::Base
     self.update_total_distance
     self.save
   end
+  
+  # def calculate_locations_stopped_at
+  #   # Pick a point. Start looping through the following points.
+  #   # If the distance is always within 100m, we can assume it's the same location
+  #   # If this continues and eventually the first point and following point are enough time apart (5min?), we can consider it a location
+  #
+  #
+  #
+  #
+  #   self.location_coordinates.each_with_index do |location_coordinate, index|
+  #     next_location = self.location_coordinates[index + 1]
+  #     break if !next_location  # we're at the end
+  #
+  #     location_coordinate.
+  #
+  #
+  #   end
+  #
+  #
+  # end
+  #
+  
+  
   #
   # def google_maps_url
   #   point_intervals = @locations.length / MAX_POINTS_PER_GOOGLE_MAP

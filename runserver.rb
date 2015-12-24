@@ -28,9 +28,15 @@ end
 
 get '/api/trips/:id/' do
   content_type :json
-  Trip.includes(:location_coordinates).find(params['id']).to_json(:include => :location_coordinates)
+  Trip.includes(location_coordinates: [:types]).find(params['id']).to_json(include: {
+    location_coordinates: {
+      include: [
+        :google_places,
+        :types
+      ]
+    }
+  })
 end
-
 
 get '/api/types/' do
   content_type :json
