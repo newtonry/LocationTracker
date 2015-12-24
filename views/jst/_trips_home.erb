@@ -2,10 +2,11 @@
      <table class="table trips-table">
 		<thead>
 			<tr>
+				<th class='col-md-1'>Id</th>
 				<th class='col-md-3'>Start</th>
 				<th class='col-md-3'>End</th> 
 				<th class='col-md-1'>Total Time</th>
-				<th class='col-md-1'>Map</th>
+				<th class='col-md-1'>View Details</th>
 			</tr>				
 		</thead>
 		<tbody></tbody>
@@ -13,8 +14,9 @@
 </script>
 
 <script type="text/html" id="trips-home-table-row">
+	<td class='col-md-1'>{{= id }}</td>
 	<td class='col-md-3'>{{= startString }}</td>
 	<td class='col-md-3'>{{= finishString }}</td> 
 	<td class='col-md-1'>{{= totalTime }}</td>
-	<td class='col-md-1'><button class='btn view-map'>View</button></td>
+	<td class='col-md-1'><button class='btn' data-action='navigateToIndividualTrip'>View</button></td>
 </script>

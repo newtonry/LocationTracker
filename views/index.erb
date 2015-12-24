@@ -101,18 +101,21 @@ $(document).ready(function() {
 	
 	var TripListItemView = Backbone.View.extend({
 		events: {
-			'click .view-map': 'viewMap'
+			'click [data-action="navigateToIndividualTrip"]': 'navigateToIndividualTrip'
 		},
 		tagName: 'tr',
 		template: _.template($("#trips-home-table-row").html()),
-		viewMap: function() {
-			this.trigger('viewMap', this.model);
+		navigateToIndividualTrip: function() {
+			var individualTripPath = 'trips/' + this.model.get('id');
+			Backbone.history.navigate(individualTripPath, {trigger:true});
+			$('html,body').scrollTop(0);  // Should I really need this?
 		},
 		
 		render: function() {
 			this.$el.empty();
 			this.$el.append(
 				this.template({
+					id: this.model.get('id'),
 					startString: this.model.get('start').toCoordinateString(),
 					finishString: this.model.get('finish').toCoordinateString(),
 					totalTime: this.model.get('total_time')
@@ -134,7 +137,13 @@ $(document).ready(function() {
 		  });
 		  
 		  this.model.get('location_coordinates').each(function(location) {
-			  new google.maps.Marker({
+
+			  // TODO look into title vs infowindow. Infowindow may not be the right way to do it.
+		      var infowindow = new google.maps.InfoWindow({
+				  content: location.get('google_places').getNamesString() + "<br>" + location.get('types').getNamesString()
+		      });			 
+
+			  var marker = new google.maps.Marker({
 	  		    position: {
 	  		    	lat: location.get('lat'),
 					lng: location.get('lng')
@@ -142,6 +151,11 @@ $(document).ready(function() {
 	  		    map: map,
 	  		    title: 'A point'
 	  		  });
+			  
+		      google.maps.event.addListener(marker, 'click', function() {
+		        infowindow.open(map,marker);
+		      });			 
+			  
 		  });
 		}
 	});
@@ -156,11 +170,6 @@ $(document).ready(function() {
 			});
 		},
 		
-		changeMap: function(selectedTrip) {
-			this.selectedTrip = selectedTrip;
-			this.render();
-		},
-		
 		render: function() {
 			this.$el.empty().append(
 				this.template()
@@ -173,15 +182,9 @@ $(document).ready(function() {
 				});
 
 				self.$('.trips-table tbody').append(tripListItemView.render().$el);
-				self.listenTo(tripListItemView, 'viewMap', self.changeMap)
 			});
 			
-			if (this.selectedTrip) {
-				this.mapView = new TripMapView({
-					model: this.selectedTrip
-				});
-				this.mapView.render();
-			}
+			$('#map').hide();  // Need to remove this since I'm not using map here anymore. Should put that el in the individual view
 		}
 	});
 
@@ -204,6 +207,8 @@ $(document).ready(function() {
 		render: function() {
 			this.$el.empty();
 			this.$el.append(this.template());
+			$('#map').show();  // Need to remove this. Reliant of moving the map el out of the home controller
+			
 			var self = this;
 
 			this.model.get('location_coordinates').each(function(location) {
@@ -217,7 +222,9 @@ $(document).ready(function() {
 			this.mapView = new TripMapView({
 				model: this.model
 			});
-			this.mapView.render();			
+			this.mapView.render();	
+			
+
 
 			return this;
 		}
