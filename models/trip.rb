@@ -1,7 +1,3 @@
-require 'pry'
-
-
-
 class Trip < ActiveRecord::Base
   MAX_POINTS_PER_GOOGLE_MAP = 20
   MAX_TIME_DIFF_BETWEEN_PINGS = 15  # if the last ping was more than 15 mins, it's probably a different trip

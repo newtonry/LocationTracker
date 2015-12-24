@@ -1,6 +1,6 @@
 require 'json'
 require 'sinatra'
-require 'sinatra/partial'
+# require 'sinatra/partial'
 require './api_keys.rb'
 require './models/google_place'
 require './models/location_coordinates'
@@ -8,9 +8,8 @@ require './models/trip'
 require './models/type'
 
 
-set :server, 'webrick'
+# set :server, 'webrick'
 set :partial_template_engine, :erb
-
 
 get '/' do
   erb :index, :locals => {:google_maps_api_key => GOOGLE_MAPS_JS_API_KEY}

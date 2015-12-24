@@ -1,4 +1,4 @@
-require 'pry'
+# require 'pry'
 
 require 'set'
 require './models/location_coordinates.rb'
@@ -26,4 +26,4 @@ y = LocationCoordinates.last
 
 z = x.distance_from_location(y)
 
-binding.pry
+# binding.pry

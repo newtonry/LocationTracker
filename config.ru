@@ -1,2 +1,3 @@
-require './runserver'
+require './app'
+
 run Sinatra::Application
