@@ -30,7 +30,7 @@ require([
 		    },
 			types: function() {
 				var typesView = new TypesView({
-					
+					el: $('#main-container')
 					
 				});
 			}
