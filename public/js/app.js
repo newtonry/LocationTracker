@@ -1,22 +1,21 @@
 require([
 	'./views/trips_home_view',
-	'./views/trip_individual_view'
+	'./views/trip_individual_view',
+	'./views/types_view'
 ], function(
 	TripsHomeView,
-	TripIndividualView
-	
+	TripIndividualView,
+	TypesView
 ) {
 	$(document).ready(function() {
 
 		var LocationTrackerRouter = Backbone.Router.extend({
 		    routes: {
+				"": "trips",  // Going to trips on index for now
+				"trips/": "trips",
 		        "trips/:id": "trip",
-		        "": "index"
-		    },
-		    index: function() {
-				var tripsHomeView = new TripsHomeView({
-					el: $('#main-container')
-				});
+		        "types/": "types"
+				
 		    },
 		    trip: function(id) {
 				var tripIndividualView = new TripIndividualView({
@@ -24,6 +23,17 @@ require([
 					id: id
 				});
 		    },
+		    trips: function() {
+				var tripsHomeView = new TripsHomeView({
+					el: $('#main-container')
+				});
+		    },
+			types: function() {
+				var typesView = new TypesView({
+					
+					
+				});
+			}
 		});
 	
 		new LocationTrackerRouter();

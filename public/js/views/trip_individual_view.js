@@ -12,7 +12,7 @@ define([
 
 
 	var TripIndividualView = Backbone.View.extend({
-		template: _.template($('#trip-location-coordinates-table').html()), // TODO the main template shouldn't be a table in the long run
+		template: _.template($('#trip-individual').html()), // TODO the main template shouldn't be a table in the long run
 	
 		initialize: function(options) {
 			this.model = new TripModel({
@@ -27,7 +27,7 @@ define([
 	
 		render: function() {
 			this.$el.empty();
-			this.$el.append(this.template());
+			this.$el.append(this.template(this.model.toJSON()));
 			$('#map').show();  // Need to remove this. Reliant of moving the map el out of the home controller
 		
 			var self = this;
