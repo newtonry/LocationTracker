@@ -40,6 +40,7 @@ end
 class LocationCoordinates < ActiveRecord::Base
 
   belongs_to :trip
+  belongs_to :visit
   has_and_belongs_to_many :google_places
   has_many :types, through: :google_places
   

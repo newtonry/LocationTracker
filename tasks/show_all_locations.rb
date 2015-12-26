@@ -1,6 +1,7 @@
 # require 'pry'
 
-require 'set'
+require './models/trip.rb'
+require './models/visit.rb'
 require './models/location_coordinates.rb'
 require './models/google_place.rb'
 
@@ -27,10 +28,23 @@ require './models/google_place.rb'
 # binding.pry
 
 
-x = LocationCoordinates.first
-x.action
+# x = LocationCoordinates.first
+# x.action
+
+# Visit.destroy_all
+# trip = Trip.last
+
+# Visit.create_visits_from_location_coordinates(trip.location_coordinates)
 
 
+# trip.create_visits
+
+#
+# Trip.all.each do |trip|
+#   trip.create_visits
+#   p trip.visits.count
+# end
+#
 
 require 'pry'
 binding.pry

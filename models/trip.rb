@@ -1,7 +1,11 @@
+require './db/environment.rb'  # need for db settings. eventually want to auto-load this probably
+require './models/visit.rb'
+
 class Trip < ActiveRecord::Base
   MAX_POINTS_PER_GOOGLE_MAP = 20
   MAX_TIME_DIFF_BETWEEN_PINGS = 15  # if the last ping was more than 15 mins, it's probably a different trip
   
+  has_many :visits
   has_many :location_coordinates, class_name: 'LocationCoordinates'
   
   
@@ -19,6 +23,7 @@ class Trip < ActiveRecord::Base
     trips.each do |trip|
       trip.update_total_time!
       trip.update_total_distance!
+      trip.create_visits
     end
     trips
   end
@@ -49,48 +54,7 @@ class Trip < ActiveRecord::Base
     self.save
   end
   
-  # def calculate_locations_stopped_at
-  #   # Pick a point. Start looping through the following points.
-  #   # If the distance is always within 100m, we can assume it's the same location
-  #   # If this continues and eventually the first point and following point are enough time apart (5min?), we can consider it a location
-  #
-  #
-  #
-  #
-  #   self.location_coordinates.each_with_index do |location_coordinate, index|
-  #     next_location = self.location_coordinates[index + 1]
-  #     break if !next_location  # we're at the end
-  #
-  #     location_coordinate.
-  #
-  #
-  #   end
-  #
-  #
-  # end
-  #
-  
-  
-  #
-  # def google_maps_url
-  #   point_intervals = @locations.length / MAX_POINTS_PER_GOOGLE_MAP
-  #   point_intervals = point_intervals > 0 ? point_intervals : 1
-  #
-  #   locations_to_plot = (0...@locations.length).step(point_intervals).map do |index|
-  #     @locations[index]
-  #   end.push(@end)
-  #
-  #   self.create_url_from_locations(locations_to_plot)
-  # end
-  #
-  # def create_url_from_locations(locations)
-  #   # TODO this can be on itself now, dont need to pass em in, or it could be a class method
-  #   start_coordinates = @start.coordinates_as_string
-  #   destinations_string = locations.map do |location|
-  #     location.coordinates_as_string
-  #   end.join('+to:')
-  #
-  #   # TODO don't do this
-  #   "https://maps.google.com/maps?source=s_d&saddr=#{@start.coordinates_as_string}&daddr=#{destinations_string}&dirflg=w"
-  # end
+  def create_visits
+    self.visits = Visit.create_visits_from_location_coordinates(self.location_coordinates)
+  end
 end
