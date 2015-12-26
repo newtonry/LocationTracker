@@ -8,14 +8,3 @@ CREATE TABLE location_coordinates(
 );
 
 ALTER TABLE location_coordinates ADD COLUMN trip_id INTEGER;
-
-
-
-
-
--- CREATE TABLE users(
--- 	id INTEGER,
--- 	name TEXT,
--- 	occupation TEXT,
--- 	PRIMARY KEY(id)
--- );

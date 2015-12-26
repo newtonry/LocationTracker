@@ -37,7 +37,7 @@ end
 
 get '/api/types/' do
   content_type :json
-  Type.all.to_json
+  Type.all.to_json(methods: :frequency)
 end
 
 
