@@ -17,7 +17,7 @@ class GooglePlace < ActiveRecord::Base
   DEFAULT_RADIUS = 10
 
   has_and_belongs_to_many :types
-  has_and_belongs_to_many :location_coordinates
+  has_and_belongs_to_many :location_coordinates, class_name: 'LocationCoordinates'
   
   def self.url_for_lat_long(lat, lng)
     location_str = [lat, lng].join(',')
@@ -52,5 +52,8 @@ class GooglePlace < ActiveRecord::Base
     end
     google_place
   end
+  
+  def number_of_location_coordinates
+    self.location_coordinates.count
+  end
 end
-

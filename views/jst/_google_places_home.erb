@@ -1,0 +1,21 @@
+<script type="text/html" id="google-places-home">
+	<h2 class="col-md-12">Google Places Visited</h2>
+	<div class="col-md-12">
+		<table class="table google-places-table">
+			<thead>
+				<tr>
+					<th class='col-md-3'>Name</th>
+					<th class='col-md-3'>Types</th>					
+					<th class='col-md-3'># Visits</th>					
+				</tr>				
+			</thead>
+		<tbody></tbody>
+		</table>
+	</div>
+</script>
+
+<script type="text/html" id="google-place-row">
+	<td class='col-md-3'>{{= name }}</td>
+	<td class='col-md-3'>{{= types.getNamesString() }}</td>
+	<td class='col-md-3'>{{= number_of_location_coordinates }}</td>
+</script>

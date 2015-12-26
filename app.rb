@@ -15,9 +15,9 @@ get '/' do
   erb :index, :locals => {:google_maps_api_key => GOOGLE_MAPS_JS_API_KEY}
 end
 
-get '/api/google_places/' do
+get '/api/google-places/' do
   content_type :json
-  GooglePlace.all.to_json
+  GooglePlace.includes(:types).all.to_json(include: :types, methods: :number_of_location_coordinates)
 end
 
 get '/api/trips/' do

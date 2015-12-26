@@ -20,10 +20,16 @@ require './models/google_place.rb'
 #
 # p show_all_locations
 
+# x = GooglePlace.first
+# x.number_of_location_coordinates
 
-x = LocationCoordinates.first
-y = LocationCoordinates.last
+require 'pry'
+binding.pry
 
-z = x.distance_from_location(y)
+
+# x = LocationCoordinates.first
+# y = LocationCoordinates.last
+
+# z = x.distance_from_location(y)
 
 # binding.pry

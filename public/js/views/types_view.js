@@ -13,7 +13,6 @@ define([
 				success: this.render.bind(this)
 			});
 		},
-		
 		render: function() {
 			this.$el.empty().append(this.template());
 			var self = this;
