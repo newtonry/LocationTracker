@@ -8,3 +8,4 @@ CREATE TABLE location_coordinates(
 );
 
 ALTER TABLE location_coordinates ADD COLUMN trip_id INTEGER;
+ALTER TABLE location_coordinates ADD COLUMN action_index INTEGER;

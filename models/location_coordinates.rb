@@ -7,6 +7,36 @@ require './utils'
 require './models/google_place'
 
 
+class LocationCoordinatesAction
+  # An enum for LocationCoordinates
+  
+  def self.VISIT
+    return {
+      index: 0,
+      canonical_name: 'visit',
+      display_name: 'Visit'
+    }
+    
+  end
+  
+  def self.EN_ROUTE
+    return {
+      index: 1,
+      canonical_name: 'en_route',
+      display_name: 'En Route'
+    }
+    
+  end
+  
+  def self.from_index(index)
+    [self.VISIT, self.EN_ROUTE].each do |action|
+      return action if action[:index] == index
+    end
+    nil  # each returns the array I guess?
+  end
+end
+
+
 class LocationCoordinates < ActiveRecord::Base
 
   belongs_to :trip
@@ -49,11 +79,9 @@ class LocationCoordinates < ActiveRecord::Base
     )
   end
   
-  def to_hash
-    {
-      coordinates: coordinates_as_string,  # TODO should just show both coords separately
-      time_visited: self.time_visited
-    }
+  def action
+    # TODO need to figure out how to do enums with active record. Naming the field action_index for now.
+    LocationCoordinatesAction.from_index(self.action_index)
   end
   
   def datetime

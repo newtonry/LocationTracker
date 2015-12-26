@@ -23,11 +23,22 @@ require './models/google_place.rb'
 # x = GooglePlace.first
 # x.number_of_location_coordinates
 
+# require 'pry'
+# binding.pry
+
+
+x = LocationCoordinates.first
+x.action
+
+
+
 require 'pry'
 binding.pry
 
 
-# x = LocationCoordinates.first
+
+
+
 # y = LocationCoordinates.last
 
 # z = x.distance_from_location(y)
