@@ -7,40 +7,11 @@ require './utils'
 require './models/google_place'
 
 
-class LocationCoordinatesAction
-  # An enum for LocationCoordinates
-  
-  def self.VISIT
-    return {
-      index: 0,
-      canonical_name: 'visit',
-      display_name: 'Visit'
-    }
-    
-  end
-  
-  def self.EN_ROUTE
-    return {
-      index: 1,
-      canonical_name: 'en_route',
-      display_name: 'En Route'
-    }
-    
-  end
-  
-  def self.from_index(index)
-    [self.VISIT, self.EN_ROUTE].each do |action|
-      return action if action[:index] == index
-    end
-    nil  # each returns the array I guess?
-  end
-end
-
-
 class LocationCoordinates < ActiveRecord::Base
 
   belongs_to :trip
-  belongs_to :visit
+  belongs_to :action
+  # belongs_to :visit
   has_and_belongs_to_many :google_places
   has_many :types, through: :google_places
   
@@ -88,10 +59,11 @@ class LocationCoordinates < ActiveRecord::Base
     @next_location_coordinates
   end
   
-  def action
-    # TODO need to figure out how to do enums with active record. Naming the field action_index for now.
-    LocationCoordinatesAction.from_index(self.action_index)
-  end
+  # def action_type
+  #   # TODO need to figure out how to do enums with active record. Naming the field action_index for now.
+  #   this.action.
+  #   # LocationCoordinatesActionType.from_index(self.action_index)
+  # end
   
   def datetime
     DateTime.parse(self.time_visited)

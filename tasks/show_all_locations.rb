@@ -47,9 +47,9 @@ require './models/action.rb'
 # end
 #
 
-locs = LocationCoordinates.all[0..100]
-
-clusters = Action.from_location_coordinates(locs)
+# locs = LocationCoordinates.all[0..100]
+#
+# clusters = Action.from_location_coordinates(locs)
 
 
 require 'pry'

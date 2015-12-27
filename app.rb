@@ -1,6 +1,8 @@
 require 'json'
 require 'sinatra'
-require './api_keys.rb'
+require './api_keys'
+require './constants'
+require './models/action'
 require './models/google_place'
 require './models/location_coordinates'
 require './models/trip'
@@ -12,6 +14,19 @@ set :partial_template_engine, :erb
 get '/' do
   erb :index, :locals => {:google_maps_api_key => GOOGLE_MAPS_JS_API_KEY}
 end
+
+get '/api/actions/' do
+  content_type :json
+  Action.where(type_index: LocationCoordinatesActionType.VISIT[:index]).to_json(
+    methods: [
+      :start,
+      :finish,
+      :time_taken,
+      :type
+    ]
+  )
+end
+
 
 get '/api/google-places/' do
   content_type :json
