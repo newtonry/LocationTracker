@@ -4,6 +4,7 @@ require './models/trip.rb'
 require './models/visit.rb'
 require './models/location_coordinates.rb'
 require './models/google_place.rb'
+require './models/action.rb'
 
 
 # def show_all_locations
@@ -46,6 +47,11 @@ require './models/google_place.rb'
 # end
 #
 
+locs = LocationCoordinates.all[0..100]
+
+clusters = Action.from_location_coordinates(locs)
+
+
 require 'pry'
 binding.pry
 
@@ -55,6 +61,6 @@ binding.pry
 
 # y = LocationCoordinates.last
 
-# z = x.distance_from_location(y)
+# z = x.distance_from(y)
 
 # binding.pry

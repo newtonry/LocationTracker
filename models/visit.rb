@@ -38,13 +38,13 @@ class Visit < ActiveRecord::Base
   end
 
   def self.location_coordinates_longer_than_minimum_time?(location_coordinates_set)
-    location_coordinates_set.first.time_difference_between_location(location_coordinates_set.last) >= MINIMUM_TIME
+    location_coordinates_set.first.time_between(location_coordinates_set.last) >= MINIMUM_TIME
   end
 
   def self.location_coordinates_all_within_visit_distance?(location_coordinates_set)
     # Takes a full set. If any of the points are more than VISIT_DISTANCE_MAX apart, it's not a trip
     location_coordinates_set.each do |location|
-       return false if location_coordinates_set.first.distance_from_location(location) > VISIT_DISTANCE_MAX
+       return false if location_coordinates_set.first.distance_from(location) > VISIT_DISTANCE_MAX
      end
      true
   end

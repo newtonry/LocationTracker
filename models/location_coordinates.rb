@@ -48,7 +48,6 @@ class LocationCoordinates < ActiveRecord::Base
   PARSE_BASE_JS_URL = "https://#{PARSE_APP_ID}:javascript-key=#{PARSE_JS_KEY}@api.parse.com/1/classes/#{self.name}?limit=1000"
   PARSE_LIMIT = 1000  # TODO should go in constants file
 
-
   def self.parse_url    
     return PARSE_BASE_JS_URL
   end
@@ -80,6 +79,15 @@ class LocationCoordinates < ActiveRecord::Base
     )
   end
   
+  # TODO should just use a property or something here
+  # These are just used to decipher if these are part of a trip or something. Maybe should use a different data type like linked list
+  def set_next_location_coordinates(location_coordinates)
+    @next_location_coordinates = location_coordinates
+  end
+  def get_next_location_coordinates
+    @next_location_coordinates
+  end
+  
   def action
     # TODO need to figure out how to do enums with active record. Naming the field action_index for now.
     LocationCoordinatesAction.from_index(self.action_index)
@@ -100,18 +108,18 @@ class LocationCoordinates < ActiveRecord::Base
   
   def is_the_same_location(other_location)
     # Should we assume that it's the same location if it's within the same 100 meters?
-    self.distance_from_location(other_location) < 100
+    self.distance_from(other_location) < 100
   end
   
   
-  def distance_from_location(other_location)
+  def distance_from(other_location)
     distance_between_locations([self.lat, self.lng], [other_location.lat, other_location.lng])
     
     # Not using Geocoder for now, as it blows up Google API limits
     # Geocoder::Calculations.distance_between(self.coordinates_as_string, other_location.coordinates_as_string)
   end
   
-  def time_difference_between_location(other_location)
+  def time_between(other_location)
     # returns the time difference in minutes
     Float((self.datetime - other_location.datetime) * (24 * 60)).abs
   end
