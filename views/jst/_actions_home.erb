@@ -1,0 +1,25 @@
+<script type="text/html" id="actions-home">
+	<h2 class="col-md-12">Actions</h2>
+	<div class='col-md-8 pull-left'>
+		<table class="table actions-table">
+			<thead>
+				<tr>
+					<th class='col-md-1'>Id</th>
+					<th class='col-md-1'>Action Type</th>					
+					<th class='col-md-2'>Recorded Time Spent</th>
+					<th class='col-md-2'>Finish Location</th>				
+				</tr>				
+			</thead>
+		<tbody></tbody>
+		</table>
+	</div>
+	<div id="map" class="pull-left col-md-4"></div>	 
+</script>
+
+<script type="text/html" id="action-row">
+	<td class='col-md-1'>{{= id }}</td>
+	<td class='col-md-3'>{{= type_index }}</td>
+	<td class='col-md-3'>{{= time_taken }}</td> 
+	<td class='col-md-3'>{{= finish.toCoordinateString() }}</td> 
+	<!-- <td class='col-md-1'><button class='btn' data-action='navigateToIndividualTrip'>View</button></td> -->
+</script>

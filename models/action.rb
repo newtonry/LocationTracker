@@ -83,9 +83,19 @@ class Action < ActiveRecord::Base
   def start
     self.location_coordinates.first
   end
+  
+  def start_with_google_places_and_types
+    # Work this out with ActiveRecord later. It's just being used in server responses
+    self.start.as_json(include: [:google_places, :types])
+  end
 
   def finish
     self.location_coordinates.last
+  end
+
+  def finish_with_google_places_and_types
+    # Work this out with ActiveRecord later. It's just being used in server responses
+    self.finish.as_json(include: [:google_places, :types])
   end
 
   def time_taken

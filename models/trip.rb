@@ -55,6 +55,6 @@ class Trip < ActiveRecord::Base
   end
   
   def create_visits
-    self.visits = Visit.create_visits_from_location_coordinates(self.location_coordinates)
+    # self.visits = Visit.create_visits_from_location_coordinates(self.location_coordinates)
   end
 end

@@ -1,15 +1,12 @@
 define([
 	'../models/trip_model',
 	'./location_coordinates_row_view',
-	'./trip_map_view'
-
-	
+	'./map_view'
 ], function(
 	TripModel,
 	LocationCoordinatesRowView,
-	TripMapView
+	MapView
 ) {
-
 
 	var TripIndividualView = Backbone.View.extend({
 		template: _.template($('#trip-individual').html()), // TODO the main template shouldn't be a table in the long run
@@ -22,7 +19,6 @@ define([
 			this.model.fetch({
 				success: this.render.bind(this)
 			});
-		
 		},
 	
 		render: function() {
@@ -40,12 +36,10 @@ define([
 				this.$('.location-coordinates-table tbody').append(locationCoordinatesRow.render().$el);
 			});
 
-			this.mapView = new TripMapView({
-				model: this.model
+			this.mapView = new MapView({
+				collection: this.model.get('location_coordinates')
 			});
 			this.mapView.render();	
-		
-
 
 			return this;
 		}

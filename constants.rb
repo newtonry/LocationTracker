@@ -7,7 +7,6 @@ class LocationCoordinatesActionType
       canonical_name: 'visit',
       display_name: 'Visit'
     }
-    
   end
   
   def self.TRAVEL
@@ -16,7 +15,6 @@ class LocationCoordinatesActionType
       canonical_name: 'travel',
       display_name: 'En Route'
     }
-    
   end
   
   def self.from_index(index)
