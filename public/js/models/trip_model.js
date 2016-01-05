@@ -12,10 +12,9 @@ define([
 			var location_coordinates = _.map(json.location_coordinates, function(location_json) {
 				return new LocationCoordinates(location_json, {parse: true});
 			});
-
 			json.location_coordinates = new Backbone.Collection(location_coordinates);			
-			json.start = json.location_coordinates.first();
-			json.finish = json.location_coordinates.last()
+			json.start = new LocationCoordinates(json.start);
+			json.finish = new LocationCoordinates(json.finish);
 			return json;
 		}
 	});

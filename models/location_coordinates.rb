@@ -24,6 +24,7 @@ class LocationCoordinates < ActiveRecord::Base
   end
 
   def self.fetch_all_from_parse
+    # Does it in increments of 1000, but parse has a limit of skipping 10000
     json_results = []
   
     while true
@@ -32,6 +33,29 @@ class LocationCoordinates < ActiveRecord::Base
       new_json_results = JSON.parse(response)['results']
       json_results += JSON.parse(response)['results']
 
+      break if new_json_results.length == 0
+    end
+
+    json_results.map do |json_location_coordinate|
+      self.init_from_json(json_location_coordinate)
+    end
+  end
+
+  def self.fetch_all_from_parse_after_create_date(create_date)
+    # This is a totally janky method. Could easily be improved!
+    json_results = []
+
+    url = PARSE_BASE_JS_URL + URI.encode('&order=createdAt&where={"createdAt":{"$gt":{"__type":"Date","iso":"' + create_date.to_time.iso8601 + '"}}}')
+    p "Starting with #{create_date.to_time.iso8601}"
+
+    while true      
+      response = RestClient.get(url)
+      new_json_results = JSON.parse(response)['results']
+      json_results += JSON.parse(response)['results']
+      
+      url = PARSE_BASE_JS_URL + URI.encode('&order=createdAt&where={"createdAt":{"$gt":{"__type":"Date","iso":"' + json_results.last['createdAt'] + '"}}}')
+      p new_json_results.count
+      p "Now onto results after #{json_results.last['createdAt']}"
       break if new_json_results.length == 0
     end
 

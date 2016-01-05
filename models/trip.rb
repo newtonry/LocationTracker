@@ -16,14 +16,12 @@ class Trip < ActiveRecord::Base
       # create a new trip if there are none or the ping between the last loc was more than 15 mins
       
       trips << self.create if (trips.length == 0 or trips.last.finish.time_between(location) > MAX_TIME_DIFF_BETWEEN_PINGS)
-      trips.last.location_coordinates.push(location)
-      trips.last.save()
+      trips.last.location_coordinates << location
     end
     
     trips.each do |trip|
       trip.update_total_time!
       trip.update_total_distance!
-      trip.create_visits
     end
     trips
   end
@@ -52,9 +50,5 @@ class Trip < ActiveRecord::Base
   def update_total_distance!
     self.update_total_distance
     self.save
-  end
-  
-  def create_visits
-    # self.visits = Visit.create_visits_from_location_coordinates(self.location_coordinates)
   end
 end
