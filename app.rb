@@ -19,8 +19,8 @@ get '/api/actions/' do
   content_type :json
   Action.where(type_index: LocationCoordinatesActionType.VISIT[:index]).to_json(
     methods: [
-      :start_with_google_places_and_types,
-      :finish_with_google_places_and_types,
+      :start_with_venues_and_types,
+      :finish_with_venues_and_types,
       :time_taken,
       :type
     ]
@@ -48,6 +48,7 @@ get '/api/trips/:id/' do
     location_coordinates: {
       include: [
         :google_places,
+        :yelp_businesses,
         :types
       ]
     }

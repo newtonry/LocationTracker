@@ -5,14 +5,15 @@ require 'rest-client'
 require './api_keys'
 require './utils'
 require './models/google_place'
+require './models/yelp_business'
 
 
 class LocationCoordinates < ActiveRecord::Base
 
   belongs_to :trip
   belongs_to :action
-  # belongs_to :visit
   has_and_belongs_to_many :google_places
+  has_and_belongs_to_many :yelp_businesses
   has_many :types, through: :google_places
   
   
@@ -82,13 +83,7 @@ class LocationCoordinates < ActiveRecord::Base
   def get_next_location_coordinates
     @next_location_coordinates
   end
-  
-  # def action_type
-  #   # TODO need to figure out how to do enums with active record. Naming the field action_index for now.
-  #   this.action.
-  #   # LocationCoordinatesActionType.from_index(self.action_index)
-  # end
-  
+    
   def datetime
     DateTime.parse(self.time_visited)
   end
@@ -102,17 +97,19 @@ class LocationCoordinates < ActiveRecord::Base
     self.save()
   end
   
+  def fetch_and_create_yelp_businesses    
+    self.yelp_businesses += YelpBusiness.fetch_and_create_businesses_for_location_coordinates(self)
+    self.save
+    p self.yelp_businesses
+  end
+  
   def is_the_same_location(other_location)
     # Should we assume that it's the same location if it's within the same 100 meters?
     self.distance_from(other_location) < 100
   end
   
-  
   def distance_from(other_location)
     distance_between_locations([self.lat, self.lng], [other_location.lat, other_location.lng])
-    
-    # Not using Geocoder for now, as it blows up Google API limits
-    # Geocoder::Calculations.distance_between(self.coordinates_as_string, other_location.coordinates_as_string)
   end
   
   def time_between(other_location)
