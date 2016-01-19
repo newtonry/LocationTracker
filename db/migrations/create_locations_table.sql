@@ -15,3 +15,4 @@ ALTER TABLE location_coordinates ADD COLUMN trip_id INTEGER;
 
 ALTER TABLE location_coordinates ADD COLUMN action_id INTEGER;
 ALTER TABLE location_coordinates ADD COLUMN action_index INTEGER;
+ALTER TABLE location_coordinates ADD COLUMN user_id INTEGER;

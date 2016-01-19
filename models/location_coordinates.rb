@@ -10,6 +10,7 @@ require './models/yelp_business'
 
 class LocationCoordinates < ActiveRecord::Base
 
+  belongs_to :user
   belongs_to :trip
   belongs_to :action
   has_and_belongs_to_many :google_places
@@ -41,8 +42,16 @@ class LocationCoordinates < ActiveRecord::Base
       self.init_from_json(json_location_coordinate)
     end
   end
-
+  
   def self.fetch_all_from_parse_after_create_date(create_date)
+    json_results = self.fetch_all_json_from_parse_after_create_date(create_date)
+
+    json_results.map do |json_location_coordinate|
+      self.init_from_json(json_location_coordinate)
+    end
+  end
+
+  def self.fetch_all_json_from_parse_after_create_date(create_date)
     # This is a totally janky method. Could easily be improved!
     json_results = []
 
@@ -60,9 +69,7 @@ class LocationCoordinates < ActiveRecord::Base
       break if new_json_results.length == 0
     end
 
-    json_results.map do |json_location_coordinate|
-      self.init_from_json(json_location_coordinate)
-    end
+    json_results
   end
   
   def self.init_from_json(json)
