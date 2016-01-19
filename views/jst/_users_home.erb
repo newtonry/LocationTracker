@@ -1,0 +1,27 @@
+<script type="text/html" id="users-home">
+	<h2 class="col-md-12">Users</h2>
+	<div class="col-md-12">
+		<table class="table users-table">
+			<thead>
+				<tr>
+					<th class='col-md-1'>Id</th>
+					<th class='col-md-3'>Username</th>
+					<th class='col-md-1'># Trips</th>
+					<th class='col-md-1'># Actions</th>
+					<th class='col-md-1'># Categories</th>
+					<th class='col-md-1'># Location Coordinates</th>					
+				</tr>				
+			</thead>
+		<tbody></tbody>
+		</table>
+	</div>
+</script>
+
+<script type="text/html" id="user-row">
+	<td class='col-md-1'>{{= id }}</td>
+	<td class='col-md-3'>{{= username }}</td>
+	<td class='col-md-1'>{{= trips_count }}</td>
+	<td class='col-md-1'>{{= actions_count }}</td>	
+	<td class='col-md-1'>N/A</td>	
+	<td class='col-md-1'>{{= location_coordinates_count }}</td>	
+</script>

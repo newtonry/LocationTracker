@@ -4,3 +4,5 @@ CREATE TABLE trips(
 	total_distance REAL,
 	PRIMARY KEY(id)
 );
+
+ALTER TABLE trips ADD COLUMN user_id INTEGER;

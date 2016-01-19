@@ -7,6 +7,7 @@ require './models/google_place'
 require './models/location_coordinates'
 require './models/trip'
 require './models/type'
+require './models/user'
 
 
 set :partial_template_engine, :erb
@@ -61,7 +62,19 @@ get '/api/types/' do
 end
 
 
+get '/api/users/' do
+  content_type :json
+  User.all.to_json(methods: [
+    :actions_count,
+    :location_coordinates_count,
+    :trips_count
+  ])
+end
 
+get '/api/users/:id/' do
+  content_type :json
+  User.find(params['id']).to_json
+end
 
 
 

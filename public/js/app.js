@@ -3,13 +3,15 @@ require([
 	'./views/google_places_home_view',
 	'./views/trips_home_view',
 	'./views/trip_individual_view',
-	'./views/types_view'
+	'./views/types_view',
+	'./views/users_view'	
 ], function(
 	ActionsHomeView,
 	GooglePlacesHomeView,
 	TripsHomeView,
 	TripIndividualView,
-	TypesView
+	TypesView,
+	UsersView
 ) {
 	$(document).ready(function() {
 
@@ -20,7 +22,8 @@ require([
 				"google-places/": "googlePlaces",
 				"trips/": "trips",
 		        "trips/:id": "trip",
-		        "types/": "types"
+		        "types/": "types",
+				"users/": "users"
 		    },
 			actions: function() {
 				new ActionsHomeView({
@@ -46,6 +49,11 @@ require([
 		    },
 			types: function() {
 				var typesView = new TypesView({
+					el: $('#main-container')
+				});
+			},
+			users: function() {
+				var usersView = new UsersView({
 					el: $('#main-container')
 				});
 			}

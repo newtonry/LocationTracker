@@ -7,7 +7,7 @@ class Trip < ActiveRecord::Base
   
   # has_many :visits
   has_many :location_coordinates, class_name: 'LocationCoordinates'
-  
+  belongs_to :user
   
   def self.create_from_locations(locations)
     trips = []
