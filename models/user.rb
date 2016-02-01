@@ -1,4 +1,5 @@
 require './db/environment'  # need for db settings. eventually want to auto-load this probably
+require './models/location_coordinates'
 
 
 class User < ActiveRecord::Base
