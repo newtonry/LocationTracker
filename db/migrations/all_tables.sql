@@ -94,6 +94,8 @@ CREATE TABLE users(
 	PRIMARY KEY(id)
 );
 
+CREATE INDEX `username_id` ON `users` (`username`, `id`);
+
 CREATE TABLE yelp_businesses(
 	id INTEGER,
 	name TEXT,

@@ -5,6 +5,7 @@ require 'rest-client'
 require './api_keys'
 require './utils'
 require './models/google_place'
+require './models/user'
 require './models/yelp_business'
 
 
@@ -73,12 +74,14 @@ class LocationCoordinates < ActiveRecord::Base
   end
   
   def self.init_from_json(json)
+    user = User.find_or_create_by(username: json['username'])    
     lat, lng = json['location'].split(',')
     self.new(
       lat: Float(lat),
       lng: Float(lng),
       parse_id: json['objectId'],
-      time_visited: DateTime.parse(json['createdAt'])
+      time_visited: DateTime.parse(json['createdAt']),
+      user_id: user.id
     )
   end
   
