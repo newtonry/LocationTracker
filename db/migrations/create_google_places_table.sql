@@ -23,6 +23,7 @@ CREATE TABLE types(
 
 CREATE TABLE google_places_location_coordinates(
 	id INTEGER,
+	user_id INTEGER,
 	google_place_id INTEGER,
 	location_coordinates_id INTEGER,
 	PRIMARY KEY(id)

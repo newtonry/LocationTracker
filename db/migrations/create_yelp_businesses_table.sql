@@ -16,6 +16,7 @@ CREATE TABLE types_yelp_businesses(
 
 CREATE TABLE location_coordinates_yelp_businesses(
 	id INTEGER,
+	user_id INTEGER,
 	yelp_business_id INTEGER,
 	location_coordinates_id INTEGER,
 	PRIMARY KEY(id)
