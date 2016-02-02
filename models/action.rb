@@ -18,8 +18,7 @@ class Action < ActiveRecord::Base
     
     location_coordinates.each_with_index do |location, index|
       location.set_next_location_coordinates(location_coordinates[index + 1])
-    end
-    
+    end    
     
     location_coordinates.each do |location|
       if cluster_is_within_action_distance(current_cluster + [location])
@@ -29,6 +28,7 @@ class Action < ActiveRecord::Base
         current_cluster = [location]
       end
     end
+    clusters << current_cluster if current_cluster.length > 0
     
     # So now we'll clusters of items next to each other. it will look like [[travel_node, travel_node], [travel_node], [visit, visit], [travel_node], [visit]]
     # Need to process them
@@ -38,25 +38,39 @@ class Action < ActiveRecord::Base
   
   def self.save_actions_from_clusters(clusters)
     # Combines adjacent travel clusters and creates both visit and en route ones
+
+    actions = []
     travel_cluster_stack = []
     clusters.each do |cluster|
       if self.is_a_visit_cluster?(cluster)
         # Clear the en route stack if there is one
-        if travel_cluster_stack
-          action = Action.create(type_index: LocationCoordinatesActionType.TRAVEL[:index])
+        if travel_cluster_stack.length > 0
+          # TODO we're making the bad assumption that all the location coordinates we're passing in are from the same user
+          action = Action.create(type_index: LocationCoordinatesActionType.TRAVEL[:index], user_id: travel_cluster_stack.first.user_id)
           action.location_coordinates = travel_cluster_stack
+          actions << action
         end
 
-        action = Action.create(type_index: LocationCoordinatesActionType.VISIT[:index])
+        # TODO we're making the bad assumption that all the location coordinates we're passing in are from the same user
+        action = Action.create(type_index: LocationCoordinatesActionType.VISIT[:index], user_id: cluster.first.user_id)
         action.location_coordinates = cluster
+        actions << action
       else
         travel_cluster_stack += cluster
       end
     end
+    
+    if travel_cluster_stack.length > 0
+      # TODO we're making the bad assumption that all the location coordinates we're passing in are from the same user      
+      action = Action.create(type_index: LocationCoordinatesActionType.TRAVEL[:index], user_id: travel_cluster_stack.first.user_id)
+      action.location_coordinates = travel_cluster_stack
+      actions << action
+    end
+    actions
   end
   
   def self.is_a_visit_cluster?(cluster)
-    if cluster.last.time_between(cluster.last.get_next_location_coordinates) > MINIMUM_TIME
+    if !cluster.last.get_next_location_coordinates or cluster.last.time_between(cluster.last.get_next_location_coordinates) > MINIMUM_TIME
       # If it's the last ping for a while, we can probably assume that it's the final stop because the GPS ended.
       # Right now this is valid, b/c we only ping when the user moves 30 meters or more. May want to remove this qualification later
       return true

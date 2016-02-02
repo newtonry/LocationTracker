@@ -6,10 +6,12 @@ require './models/action.rb'
 
 def wipe_all_the_tables!
   # This is super dangerous!
-  Trip.all.delete()
-  Action.all.delete()
-  LocationCoordinates.all.delete()
-  GooglePlace.all.delete()
-  User.all.delete()
+  Trip.destroy_all
+  Action.destroy_all
+  LocationCoordinates.destroy_all
+  GooglePlace.destroy_all
+  User.destroy_all
   puts "All the tables have been deleted"
 end
+
+wipe_all_the_tables!

@@ -1,7 +1,10 @@
 define([
-	'./location_coordinates_model'
+	'./location_coordinates_model',
+	'./user_model'
+	
 ], function(
-	LocationCoordinates
+	LocationCoordinates,
+	UserModel
 ) {
 	var Trip = Backbone.Model.extend({
 		url: function() {
@@ -15,6 +18,7 @@ define([
 			json.location_coordinates = new Backbone.Collection(location_coordinates);			
 			json.start = new LocationCoordinates(json.start);
 			json.finish = new LocationCoordinates(json.finish);
+			json.user = new UserModel(json.user)			
 			return json;
 		}
 	});

@@ -14,7 +14,8 @@ class Trip < ActiveRecord::Base
     locations.each do |location|
       # create a new trip if there are none or the ping between the last loc was more than 15 mins
       
-      trips << self.create if (trips.length == 0 or trips.last.finish.time_between(location) > MAX_TIME_DIFF_BETWEEN_PINGS)
+      # TODO we're making a bad assumption here, that all the given locations are from the same user
+      trips << self.create(user_id: location.user_id) if (trips.length == 0 or trips.last.finish.time_between(location) > MAX_TIME_DIFF_BETWEEN_PINGS)
       trips.last.location_coordinates << location
     end
     
