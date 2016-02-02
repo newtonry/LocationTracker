@@ -1,13 +1,13 @@
-DROP TABLE google_places;
-DROP TABLE google_places_location_coordinates;
-DROP TABLE google_places_types;
-DROP TABLE location_coordinates;
-DROP TABLE location_coordinates_yelp_businesses;
-DROP TABLE trips;
-DROP TABLE types;
-DROP TABLE types_yelp_businesses;
-DROP TABLE users;
-DROP TABLE yelp_businesses;
+DROP TABLE IF EXISTS google_places;
+DROP TABLE IF EXISTS google_places_location_coordinates;
+DROP TABLE IF EXISTS google_places_types;
+DROP TABLE IF EXISTS location_coordinates;
+DROP TABLE IF EXISTS location_coordinates_yelp_businesses;
+DROP TABLE IF EXISTS trips;
+DROP TABLE IF EXISTS types;
+DROP TABLE IF EXISTS types_yelp_businesses;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS yelp_businesses;
 
 
 

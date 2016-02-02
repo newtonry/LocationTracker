@@ -1,17 +1,19 @@
-require './models/trip.rb'
-require './models/location_coordinates.rb'
-require './models/google_place.rb'
 require './models/action.rb'
-
+require './models/google_place.rb'
+require './models/location_coordinates.rb'
+require './models/trip.rb'
+require './models/type.rb'
+require './models/user.rb'
+require './models/yelp_business.rb'
 
 def wipe_all_the_tables!
   # This is super dangerous!
-  Trip.destroy_all
   Action.destroy_all
-  LocationCoordinates.destroy_all
   GooglePlace.destroy_all
+  LocationCoordinates.destroy_all
+  Trip.destroy_all
+  Type.destroy_all
   User.destroy_all
+  YelpBusiness.destroy_all
   puts "All the tables have been deleted"
 end
-
-wipe_all_the_tables!

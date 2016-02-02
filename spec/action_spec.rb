@@ -1,8 +1,5 @@
-require './models/action'
+load './models/action.rb'  # TODO look into this more, I need to load b/c if I require in a different file, this craps out?
 require './models/location_coordinates'
-
-
-# TODO get this to use a fake DB
 
 
 RSpec.describe Action, "Action model" do
