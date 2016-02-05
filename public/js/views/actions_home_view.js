@@ -34,7 +34,7 @@ define([
 			});
 			
 			this.mapView = new MapView({
-				collection: new Backbone.Collection(this.actions.pluck('finish')),
+				collection: new Backbone.Collection(this.actions.pluck('midpoint')),
 				zoom: 2
 			});
 			this.mapView.render();	

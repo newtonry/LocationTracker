@@ -38,7 +38,7 @@ RSpec.describe Action, "Action model" do
       it "should not consider any except for the last coordinate a visit action" do
       end
     end
-    # # RECONSIDER THE TESTS ABOVE
+    # RECONSIDER THE TESTS ABOVE
 
 
     context "If location coordinates seem to be moving around a lot and then stop for 15+ minutes" do
@@ -54,6 +54,7 @@ RSpec.describe Action, "Action model" do
       visiting_location_coordinates << LocationCoordinates.new(user_id: 1, time_visited: (original_datetime + 15.minutes), lat: 16.00000001, lng: 20)
       visiting_location_coordinates << LocationCoordinates.new(user_id: 1, time_visited: (original_datetime + 20.minutes), lat: 16.000000012, lng: 20)
       visiting_location_coordinates << LocationCoordinates.new(user_id: 1, time_visited: (original_datetime + 25.minutes), lat: 16.000000013, lng: 20)
+      visiting_location_coordinates << LocationCoordinates.new(user_id: 1, time_visited: (original_datetime + 30.minutes), lat: 16.000000014, lng: 20)      
 
       location_coordinates = travelling_location_coordinates + visiting_location_coordinates
       actions = Action.from_location_coordinates(location_coordinates)

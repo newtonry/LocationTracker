@@ -16,7 +16,7 @@ class Action < ActiveRecord::Base
     location_coordinates.each_with_index do |location, index|
       location.set_next_location_coordinates(location_coordinates[index + 1])
     end
-
+    
     clusters = []
     travel_cluster = []  # the travel cluster is meant to hold locations that aren't close enough to each other and keep on adding to it until we hit a visit, in which case we know travel is done
     
@@ -47,7 +47,7 @@ class Action < ActiveRecord::Base
     # Gets the location coordinates that make up a visit action if there is one. Otherwise we return nothing.
     cluster = [location]
     # Keep adding next locations until we're out of range.
-    until !self.cluster_is_within_action_distance?(cluster) or !cluster.last.get_next_location_coordinates
+    while cluster.last.get_next_location_coordinates and self.cluster_is_within_action_distance?(cluster + [cluster.last.get_next_location_coordinates])
       cluster << cluster.last.get_next_location_coordinates
     end
     return self.is_a_visit_cluster?(cluster) ? cluster : nil
@@ -75,7 +75,7 @@ class Action < ActiveRecord::Base
     # TODO could reduce this time by just comparing first and last
     
     starting_location = cluster[0]
-    cluster[1...cluster.length-1].each do |location|
+    cluster[1..cluster.length-1].each do |location|
       return false if starting_location.distance_from(location) > VISIT_DISTANCE_MAX
     end
     true
