@@ -8,8 +8,8 @@ class Action < ActiveRecord::Base
   belongs_to :user
   
 
-  VISIT_DISTANCE_MAX = 250  # Number of meters in which something should be considered the same location or not
-  MINIMUM_TIME = 5  # Number of minutes which a user must stay within the location for it to be considered a visit
+  VISIT_DISTANCE_MAX = 1000  # Number of meters in which something should be considered the same location or not
+  MINIMUM_TIME = 15  # Number of minutes which a user must stay within the location for it to be considered a visit
 
   def self.from_location_coordinates(location_coordinates)
     # Setting all the 'next' location coordinates. Similar to a linked list
@@ -89,6 +89,19 @@ class Action < ActiveRecord::Base
     self.location_coordinates.first
   end
   
+  def midpoint
+    lat = 0
+    lng = 0
+    self.location_coordinates.each do |location|
+      lat += location.lat
+      lng += location.lng      
+    end
+    lat = lat / self.location_coordinates.count
+    lng = lng / self.location_coordinates.count    
+    require './models/location_coordinates'
+    LocationCoordinates.new(lat: lat, lng: lng)    
+  end
+  
   def start_with_venues_and_types
     # Work this out with ActiveRecord later. It's just being used in server responses
     self.start.as_json(include: [:google_places, :types, :yelp_businesses])
@@ -101,6 +114,11 @@ class Action < ActiveRecord::Base
   def finish_with_venues_and_types
     # Work this out with ActiveRecord later. It's just being used in server responses
     self.finish.as_json(include: [:google_places, :types, :yelp_businesses])
+  end
+
+  def location_coordinates_count
+    # Just here to include in json data for now
+    self.location_coordinates.count
   end
 
   def time_taken

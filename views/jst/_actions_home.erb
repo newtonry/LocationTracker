@@ -5,9 +5,11 @@
 			<thead>
 				<tr>
 					<th class='col-md-1'>Id</th>
+					<th class='col-md-1'>User</th>					
 					<th class='col-md-1'>Action Type</th>					
 					<th class='col-md-2'>Recorded Time Spent</th>
-					<th class='col-md-2'>Finish Location</th>				
+					<th class='col-md-2'>Average Location</th>
+					<th class='col-md-2'># GPS Points</th>									
 				</tr>				
 			</thead>
 		<tbody></tbody>
@@ -18,8 +20,10 @@
 
 <script type="text/html" id="action-row">
 	<td class='col-md-1'>{{= id }}</td>
-	<td class='col-md-3'>{{= type_index }}</td>
-	<td class='col-md-3'>{{= time_taken }}</td> 
-	<td class='col-md-3'>{{= finish.toCoordinateString() }}</td> 
+	<td class='col-md-1'>{{= user.get('username') }}</td>	
+	<td class='col-md-1'>{{= type.display_name }}</td>
+	<td class='col-md-2'>{{= time_taken }} mins</td> 
+	<td class='col-md-2'>{{= midpoint.toCoordinateString() }}</td>
+	<td class='col-md-2'>{{= location_coordinates_count }}</td> 	
 	<!-- <td class='col-md-1'><button class='btn' data-action='navigateToIndividualTrip'>View</button></td> -->
 </script>

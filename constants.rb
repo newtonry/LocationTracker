@@ -13,7 +13,7 @@ class LocationCoordinatesActionType
     return {
       index: 1,
       canonical_name: 'travel',
-      display_name: 'En Route'
+      display_name: 'Travel'
     }
   end
   

@@ -18,14 +18,19 @@ end
 
 get '/api/actions/' do
   content_type :json
-  Action.where(type_index: LocationCoordinatesActionType.VISIT[:index]).to_json(
+  # Action.where(type_index: LocationCoordinatesActionType.VISIT[:index]).to_json(
+  Action.includes(:user).all.to_json({
     methods: [
-      :start_with_venues_and_types,
       :finish_with_venues_and_types,
+      :location_coordinates_count,
+      :midpoint,
+      :start_with_venues_and_types, 
       :time_taken,
       :type
-    ]
+    ],
+    include: :user}
   )
+
 end
 
 get '/api/google-places/' do

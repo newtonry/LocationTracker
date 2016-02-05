@@ -14,9 +14,9 @@ def generate_trips_and_actions_for_user(user)
   Action.from_location_coordinates(actionless_location_coordinates)
   puts "Action creation finished. There are now #{user.actions.count} total actions for #{user.username}"
   
-  tripless_location_coordinates = user.location_coordinates.where(trip_id: nil).order('time_visited ASC')
-  Trip.create_from_locations(tripless_location_coordinates)
-  puts "Trip creation finished. There are now #{user.trips.count} total trips for #{user.username}"
+  # tripless_location_coordinates = user.location_coordinates.where(trip_id: nil).order('time_visited ASC')
+  # Trip.create_from_locations(tripless_location_coordinates)
+  # puts "Trip creation finished. There are now #{user.trips.count} total trips for #{user.username}"
 end
 
 def generate_trips_and_actions_for_all_users
