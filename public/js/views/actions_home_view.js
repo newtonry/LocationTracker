@@ -1,10 +1,12 @@
 define([
 	'../collections/action_collection',
+	'./actions_filter_view',
 	'./action_row_view',
 	'./map_view'
 	
 ], function(
 	ActionCollection,
+	ActionsFilterView,
 	ActionRowView,
 	MapView
 ) {
@@ -20,12 +22,17 @@ define([
 		},
 	
 		render: function() {
-			this.$el.empty().append(
-				this.template()
-			);
+			this.$el.empty().append(this.template());
+
+			// TODO should we not be instantiating these a lot of times?
+			this.actionsFilterView = new ActionsFilterView({
+				collection: this.actions
+			});
+			this.$('.actions-filter').append(this.actionsFilterView.render().$el);
+			this.listenTo(this.actionsFilterView, 'change', this.render)
 
 			var self = this;
-			this.actions.each(function(action) {
+			this.actions.getFilteredActions().each(function(action) {
 				var actionRowView = new ActionRowView({
 					model: action
 				});
@@ -36,7 +43,7 @@ define([
 			});
 			
 			this.mapView = new MapView({
-				collection: new Backbone.Collection(this.actions.pluck('midpoint')),
+				collection: new Backbone.Collection(this.actions.getFilteredActions().pluck('midpoint')),
 				zoom: 2
 			});
 			this.mapView.render();
@@ -51,7 +58,6 @@ define([
 		    action.get('midpoint').getGoogleMapsInfoView().open(this.mapView.map, mapMarker);
 			
 			$('body').scrollTop(0);  // TODO probably shouldn't need this in the future
-			
 		}
 	});
 	

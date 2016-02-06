@@ -1,5 +1,6 @@
 <script type="text/html" id="actions-home">
 	<h2 class="col-md-12">Actions</h2>
+	<div class='actions-filter col-md-12'></div>
 	<div class='col-md-8 pull-left'>
 		<table class="table actions-table">
 			<thead>
@@ -27,3 +28,25 @@
 	<td class='col-md-2'>{{= location_coordinates_count }}</td> 	
 	<!-- <td class='col-md-1'><button class='btn' data-action='navigateToIndividualTrip'>View</button></td> -->
 </script>
+
+
+
+
+
+
+
+<script type="text/html" id="actions-filter">
+	<div class='form-group col-md-1'>
+	  <select class="user-selection form-control pull-left">
+	    <option value="all_users">All Users</option>
+	  </select>
+	</div>
+	<div class=' form-group col-md-1'>
+	  <select class="type-selection form-control pull-left col-md-1">
+	    <option>All Action Types</option>
+	  </select>
+	</div>
+</script>
+
+
+

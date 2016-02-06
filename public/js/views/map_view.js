@@ -15,8 +15,7 @@ define([], function() {
 				},
 				zoom: this.zoom
 			});
-	  
-			
+
 			this.collection.each(function(location) {
 			  var mapMarker = location.addMarkerToMap(this.map);
 			  // TODO look into title vs infowindow. Infowindow may not be the right way to do it.
