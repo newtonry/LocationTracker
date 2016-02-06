@@ -3,6 +3,12 @@ html, body {
 	margin: 0;
 	padding: 0;
 }
+
 #map {
 	height: 400px;
+}
+
+body {
+    background-image: url("../assets/crossword.png");
+    background-repeat: repeat;
 }
