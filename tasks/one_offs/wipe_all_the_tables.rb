@@ -17,3 +17,5 @@ def wipe_all_the_tables!
   YelpBusiness.destroy_all
   puts "All the tables have been deleted"
 end
+
+wipe_all_the_tables!

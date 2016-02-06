@@ -14,8 +14,8 @@ define([
 			json.start = new LocationCoordinates(start, {parse: true});
 			json.finish = new LocationCoordinates(finish, {parse: true});
 			json.midpoint = new LocationCoordinates(json.midpoint, {parse: true});
-
 			json.user = new UserModel(json.user);
+			json.midpoint.set('marker_text', json.user.get('username') + 'on Trip ' + json.id);
 
 			// TODO convert action type to object here as well
 			return json;

@@ -23,7 +23,7 @@
 	<td class='col-md-1'>{{= user.get('username') }}</td>	
 	<td class='col-md-1'>{{= type.display_name }}</td>
 	<td class='col-md-2'>{{= time_taken }} mins</td> 
-	<td class='col-md-2'>{{= midpoint.toCoordinateString() }}</td>
+	<td class='col-md-2'><a href="#" data-action="selectPointOnMap">{{= midpoint.toCoordinateString() }}</a></td>
 	<td class='col-md-2'>{{= location_coordinates_count }}</td> 	
 	<!-- <td class='col-md-1'><button class='btn' data-action='navigateToIndividualTrip'>View</button></td> -->
 </script>

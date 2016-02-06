@@ -12,10 +12,32 @@ define([
 			json.types = new TypeCollection(json.types, {parse: true})
 			return json;
 		},
+		
 		toCoordinateString: function() {
 			return [this.get('lat'), this.get('lng')].join(',');
 		},
-		toGoogleMarker: function() {}
+		
+		toGoogleMapsLngLat: function() {
+			return new google.maps.LatLng(this.get('lat'), this.get('lng'));
+		},
+		
+		getGoogleMapsInfoView: function() {
+		  return new google.maps.InfoWindow({
+			  content: this.get('marker_text')
+		  });		
+		},
+		
+		addMarkerToMap: function(map) {
+			this.set('mapMarker', new google.maps.Marker({
+	  		    position: {
+	  		    	lat: this.get('lat'),
+					lng: this.get('lng')
+	  		    },
+	  		    map: map,
+	  		    title: 'A point'
+	  		  }));
+			  return this.get('mapMarker');
+		}
 	});
 	
 	return LocationCoordinates;
