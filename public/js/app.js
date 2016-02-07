@@ -1,4 +1,5 @@
 require([
+	'./views/action_individual_view',	
 	'./views/actions_home_view',
 	'./views/google_places_home_view',
 	'./views/trips_home_view',
@@ -6,6 +7,7 @@ require([
 	'./views/types_view',
 	'./views/users_view'	
 ], function(
+	ActionIndividualView,
 	ActionsHomeView,
 	GooglePlacesHomeView,
 	TripsHomeView,
@@ -17,13 +19,20 @@ require([
 
 		var LocationTrackerRouter = Backbone.Router.extend({
 		    routes: {
-				"": "trips",  // Going to trips on index for now
+				"": "actions",  // Going to trips on index for now
 				"actions/": "actions",
+		        "actions/:id": "action",
 				"google-places/": "googlePlaces",
-				"trips/": "trips",
+				// "trips/": "trips",
 		        "trips/:id": "trip",
 		        "types/": "types",
 				"users/": "users"
+		    },
+		    action: function(id) {
+				var actionIndividualView = new ActionIndividualView({
+					el: $('#main-container'),
+					id: id
+				});
 		    },
 			actions: function() {
 				new ActionsHomeView({
@@ -35,18 +44,17 @@ require([
 					el: $('#main-container')
 				});				
 			},
-			
 		    trip: function(id) {
 				var tripIndividualView = new TripIndividualView({
 					el: $('#main-container'),
 					id: id
 				});
 		    },
-		    trips: function() {
-				var tripsHomeView = new TripsHomeView({
-					el: $('#main-container')
-				});
-		    },
+				// 		    trips: function() {
+				// var tripsHomeView = new TripsHomeView({
+				// 	el: $('#main-container')
+				// });
+				// 		    },
 			types: function() {
 				var typesView = new TypesView({
 					el: $('#main-container')

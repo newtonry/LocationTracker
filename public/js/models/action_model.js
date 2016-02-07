@@ -1,12 +1,21 @@
 define([
+	'../collections/location_coordinates_collection',
 	'./location_coordinates_model',
 	'./user_model'
 ], function(
+	LocationCoordinatesCollection,
 	LocationCoordinates,
 	UserModel
 ) {
 	var Action = Backbone.Model.extend({
+
+		url: function() {
+			return '/api/actions/' + this.get('id') + '/';
+		},
+
 		parse: function(json) {
+			json.location_coordinates = new LocationCoordinatesCollection(json.location_coordinates);
+			
 			// TODO this is dumb. Should work this out with activerecord
 			var start = json.start || json.start_with_venues_and_types;
 			var finish = json.finish || json.finish_with_venues_and_types;

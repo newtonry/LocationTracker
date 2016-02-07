@@ -30,8 +30,14 @@ get '/api/actions/' do
     ],
     include: :user}
   )
-
 end
+
+get '/api/actions/:id/' do
+  content_type :json
+  Action.find(params['id']).to_json(include: [:location_coordinates, :user], methods: :type)
+end
+
+
 
 get '/api/google-places/' do
   content_type :json
