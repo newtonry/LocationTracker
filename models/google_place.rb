@@ -25,7 +25,7 @@ class GooglePlace < ActiveRecord::Base
   end
 
   def self.fetch_and_create_places_for_coordinates(lat, long)
-    response = RestClient.get(self.url_for_lat_long(lat, long))    
+    response = RestClient.get(self.url_for_lat_long(lat, long))
     JSON.parse(response)['results'].map do |json_google_place|
       self.init_from_json(json_google_place)      
     end

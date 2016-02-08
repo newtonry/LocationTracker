@@ -26,8 +26,8 @@ define([
 			  content: this.get('marker_text')
 		  });		
 		},
-		
-		addMarkerToMap: function(map) {
+
+ 		addMarkerToMap: function(map) {
 			this.set('mapMarker', new google.maps.Marker({
 	  		    position: {
 	  		    	lat: this.get('lat'),
