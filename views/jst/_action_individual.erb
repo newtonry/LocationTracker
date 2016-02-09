@@ -1,20 +1,26 @@
 <script type="text/html" id="action-individual">
 	<h2 class="col-md-12">Action # {{= id }}</h2>
 	<h3 class="col-md-12">{{= user.get('username') }} - {{= type.display_name }}</h3>
-	<div class="col-md-12"><button class='btn' data-action='getExternalSourceData'>Show Yelp & Google Data</button></div>
-	<div class='col-md-8 pull-left'>
-	    <table class="table location-coordinates-table">
-			<thead>
-				<tr>
-					<th class='col-md-2'>Lat</th>
-					<th class='col-md-2'>Long</th>
-					<th class='col-md-2'>Time Visited</th>
-				</tr>				
-			</thead>
-			<tbody></tbody>
-	     </table>
-	 </div>
-	<div id="map" class="pull-left col-md-4"></div>	 
+
+	<ul class="nav nav-tabs">
+	  <li role="presentation" data-action='showLocationCoordinatesTable' {{if (activeView === 'locationCoordinatesTableView') { }} class="active" {{ } }}><a href="#">Show Location Coordinates</a></li>
+	  <li role="presentation" data-action='getExternalSourceData' {{if (activeView === 'externalDataView') { }} class="active" {{ } }}><a href="#">Show Yelp & Google Data</a></li>
+	</ul>
+	<div id="map" class="pull-right col-md-4"></div>
+	<div class='col-md-8 pull-left content-container'></div>
+</script>
+
+<script type="text/html" id="action-location-coordinates-table">
+	<table class="table location-coordinates-table">
+		<thead>
+			<tr>
+				<th class='col-md-2'>Lat</th>
+				<th class='col-md-2'>Long</th>
+				<th class='col-md-2'>Time Visited</th>
+			</tr>				
+		</thead>
+		<tbody></tbody>
+	 </table>
 </script>
 
 <script type="text/html" id="action-location-coordinates-row">
@@ -22,3 +28,35 @@
 	<td class='col-md-2'>{{= lng }}</td>
 	<td class='col-md-2'>{{= time_visited }}</td>
 </script>
+
+<script type="text/html" id="external-action-data-container">
+	{{ if(!fetched) { }}<div class='col-md-12'>LOADING</div>{{ } }}
+	<div class='col-md-2 foursquare-venue-div'><h3>Foursquare</h3></div>
+	<div class='col-md-2 google-place-div'><h3>Google</h3></div>
+	<div class='col-md-2 yelp-place-div'><h3>Yelp</h3></div>
+</script>
+
+<script type="text/html" id="external-foursquare-row">
+	<ul class='col-md-12'>
+		<b>{{= name }}</b>
+		<li>{{= location.distance }}	</li>
+		<li>{{= _.map(categories, function(category) {return category.name}).join(', ') }}</li>
+	</ul>
+</script>
+
+<script type="text/html" id="external-google-row">
+	<ul class='col-md-12'>
+		<b>{{= name }}</b>
+		<li>{{= types.join(', ') }}</li>
+	</ul>
+</script>
+
+<script type="text/html" id="external-yelp-row">
+	<ul class='col-md-12'>
+		<b>{{= name }}</b>
+		<li>{{= distance }}	</li>
+		<li>{{= _.map(categories, function(category) {return category[0]}).join(', ') }}</li>
+	</ul>
+</script>
+
+

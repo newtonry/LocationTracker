@@ -4,6 +4,7 @@ require 'sinatra'
 require './api_keys'
 require './constants'
 require './models/action'
+require './models/foursquare_venue'
 require './models/google_place'
 require './models/location_coordinates'
 require './models/trip'
@@ -50,10 +51,13 @@ get '/api/actions/:id/external-api-data/' do
   google_places_url = GooglePlace.url_for_lat_long(action.midpoint.lat, action.midpoint.lng)
   google_places_response = JSON.parse(RestClient.get(google_places_url))
   yelp_businesses_response = YelpBusiness.get_businesses_for_coordinates(action.midpoint)
+  foursquare_venues_response = FoursquareVenue.fetch_for_location_coordinates(action.midpoint)
+  
     
   external_api_data  = {
     google_places: google_places_response,
-    yelp_businesses: yelp_businesses_response
+    yelp_businesses: yelp_businesses_response,
+    foursquare_venues: foursquare_venues_response
   }
   external_api_data.to_json
 end
