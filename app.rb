@@ -40,7 +40,7 @@ end
 
 get '/api/actions/:id/' do
   content_type :json
-  Action.find(params['id']).to_json(include: [:location_coordinates, :user], methods: :type)
+  Action.find(params['id']).to_json(include: [:location_coordinates, :user], methods: [:midpoint, :type])
 end
 
 get '/api/actions/:id/external-api-data/' do
@@ -53,7 +53,6 @@ get '/api/actions/:id/external-api-data/' do
   yelp_businesses_response = YelpBusiness.get_businesses_for_coordinates(action.midpoint)
   foursquare_venues_response = FoursquareVenue.fetch_for_location_coordinates(action.midpoint)
   
-    
   external_api_data  = {
     google_places: google_places_response,
     yelp_businesses: yelp_businesses_response,

@@ -66,8 +66,10 @@ define([
 			}
 
 			this.mapView = new MapView({collection: this.model.get('location_coordinates')});
-			this.mapView.render();
 
+			debugger
+			this.mapView.addPoint(this.model.get('midpoint'), '00FF00');
+			this.mapView.render();
 
 			// var hexValues = Utils.redHexValues(this.model.get('location_coordinates').length);
 				// http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF0000
@@ -86,7 +88,6 @@ define([
 			this.activeView = 'externalDataView';
 			this.render();
 			if (this.externalActionData.fetched) {
-				// this.render();
 				return;
 			}
 			var self = this;
