@@ -1,5 +1,5 @@
 define([
-	'../collections/user_collection',
+	'../../collections/user_collection',
 	'./user_row_view'
 	
 ], function(

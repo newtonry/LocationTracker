@@ -1,10 +1,10 @@
 define([
-	'../models/action_model',
-	'../models/external_models/external_action_data_model',
+	'../../models/action_model',
+	'../../models/external_models/external_action_data_model',
 	'./action_individual_location_coordinates_table_view',
 	'./external_action_data_view',
-	'./map_view',
-	'../utils'
+	'../map_view',
+	'../../utils'
 ], function(
 	ActionModel,
 	ExternalActionDataModel,

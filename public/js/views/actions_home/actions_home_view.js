@@ -1,8 +1,8 @@
 define([
-	'../collections/action_collection',
+	'../../collections/action_collection',
 	'./actions_filter_view',
 	'./action_row_view',
-	'./map_view'
+	'../map_view'
 	
 ], function(
 	ActionCollection,
@@ -15,24 +15,34 @@ define([
 		template: _.template($("#actions-home").html()),
 	
 		initialize: function() {
-			this.actions = new ActionCollection();
-			this.actions.fetch({
-				success: this.render.bind(this),		
+			this.collection = new ActionCollection();
+			var self = this;
+			this.collection.fetch({
+				success: function() {
+					self.collection.fetched = true;
+					self.render();
+				}
 			});
+			this.render();
 		},
 	
 		render: function() {
+			if (!this.collection.fetched) {
+				this.$el.empty().append(_.template($('#loading-spinner').html())());
+				return this;
+			}
+			
 			this.$el.empty().append(this.template());
 
 			// TODO should we not be instantiating these a lot of times?
 			this.actionsFilterView = new ActionsFilterView({
-				collection: this.actions
+				collection: this.collection
 			});
 			this.$('.actions-filter').append(this.actionsFilterView.render().$el);
 			this.listenTo(this.actionsFilterView, 'change', this.render)
 
 			var self = this;
-			this.actions.getFilteredActions().each(function(action) {
+			this.collection.getFilteredActions().each(function(action) {
 				var actionRowView = new ActionRowView({
 					model: action
 				});
@@ -43,7 +53,7 @@ define([
 			});
 			
 			this.mapView = new MapView({
-				collection: new Backbone.Collection(this.actions.getFilteredActions().pluck('midpoint')),
+				collection: new Backbone.Collection(this.collection.getFilteredActions().pluck('midpoint')),
 				zoom: 2
 			});
 			this.mapView.render();

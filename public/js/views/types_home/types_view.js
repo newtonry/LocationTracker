@@ -1,5 +1,5 @@
 define([
-	'../collections/type_collection',
+	'../../collections/type_collection',
 	'./type_row_view'
 ], function(
 	TypeCollection,

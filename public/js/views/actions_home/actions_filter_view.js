@@ -1,5 +1,5 @@
 define([
-	'../collections/user_collection'
+	'../../collections/user_collection'
 ], function(
 	UserCollection
 ) {

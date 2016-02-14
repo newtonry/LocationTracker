@@ -1,17 +1,17 @@
 require([
-	'./views/action_individual_view',	
-	'./views/actions_home_view',
+	'./views/action_individual/action_individual_view',	
+	'./views/actions_home/actions_home_view',
 	'./views/google_places_home_view',
-	'./views/trips_home_view',
-	'./views/trip_individual_view',
-	'./views/types_view',
-	'./views/users_view'	
+	// './views/trips_home_view',
+	// './views/trip_individual_view',
+	'./views/types_home/types_view',
+	'./views/users_home/users_view'	
 ], function(
 	ActionIndividualView,
 	ActionsHomeView,
 	GooglePlacesHomeView,
-	TripsHomeView,
-	TripIndividualView,
+	// TripsHomeView,
+	// TripIndividualView,
 	TypesView,
 	UsersView
 ) {
@@ -44,12 +44,12 @@ require([
 					el: $('#main-container')
 				});				
 			},
-		    trip: function(id) {
-				var tripIndividualView = new TripIndividualView({
-					el: $('#main-container'),
-					id: id
-				});
-		    },
+				// 		    trip: function(id) {
+				// var tripIndividualView = new TripIndividualView({
+				// 	el: $('#main-container'),
+				// 	id: id
+				// });
+				// 		    },
 				// 		    trips: function() {
 				// var tripsHomeView = new TripsHomeView({
 				// 	el: $('#main-container')
