@@ -65,14 +65,12 @@ define([
 				this.$('.content-container').append(actionIndividualLocationCoorinatesTableView.render().$el);
 			}
 
-			this.mapView = new MapView({collection: this.model.get('location_coordinates')});
-
-			debugger
-			this.mapView.addPoint(this.model.get('midpoint'), '00FF00');
+			this.mapView = new MapView({
+				collection: this.model.get('location_coordinates'),
+				colorsArray: Utils.redHexValues(this.model.get('location_coordinates').length)
+			});
+			this.mapView.addPoint(this.model.get('midpoint'), '11DD55');
 			this.mapView.render();
-
-			// var hexValues = Utils.redHexValues(this.model.get('location_coordinates').length);
-				// http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FF0000
 
 			return this;
 		},

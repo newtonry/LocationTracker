@@ -6,6 +6,7 @@ define([], function() {
 			options = options || {};
 			this.defaultIconUrl = 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|'
 			this.zoom = options.zoom || 13;
+			this.colorsArray = options.colorsArray || [];  // This allows us to give an array of colors that will be popped in order of map markers
 
 			this.map = new google.maps.Map(document.getElementById('map'), {
 				center: {
@@ -17,14 +18,15 @@ define([], function() {
 		},
 		
 		render: function() {
+			var colorsArray = this.colorsArray.slice()
 			this.collection.each(function(location) {
-				this.addPoint(location);
+				var color = colorsArray.length > 0 ? colorsArray.shift() : null
+				this.addPoint(location, color);
 			}, this);
 		},
 		
 		addPoint: function(location, color) {
-			debugger
-			
+			console.log(color)
 			color = color || 'FF0000';
 			var mapMarker = location.addMarkerToMap(this.map);
 			mapMarker.setIcon(this.defaultIconUrl + color);

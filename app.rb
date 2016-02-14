@@ -61,8 +61,6 @@ get '/api/actions/:id/external-api-data/' do
   external_api_data.to_json
 end
 
-
-
 get '/api/google-places/' do
   content_type :json
   GooglePlace.includes(:types).all.to_json(include: :types, methods: :number_of_location_coordinates)

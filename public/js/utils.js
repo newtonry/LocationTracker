@@ -11,8 +11,7 @@ define([], function() {
 				}
 			}
 			
-			var interval = 256/num;
-			
+			var interval = Math.floor(256/num);
 			var finalHexValues = []
 			for (var i=0; i < 256; i+=interval) {
 				finalHexValues.push(hexValues[i]);
