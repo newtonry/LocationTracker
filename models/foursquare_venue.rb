@@ -9,7 +9,7 @@ require './models/type'
 class FoursquareVenue < ActiveRecord::Base
   FOURSQUARE_VENUES_BASE_URL = 'https://api.foursquare.com/v2/venues/search'
   FOURSQUARE_API_VERSION = 20130815
-  RADIUS = 25
+  RADIUS = 100
   INTENT = 'browse'
 
   def self.url_for_lat_long(lat, lng)

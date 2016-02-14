@@ -44,10 +44,10 @@ class YelpBusiness < ActiveRecord::Base
       sort: SORT
     }
 
-    Yelp.client.search_by_coordinates(
-      coordinates_hash,
-      params
-    ).businesses
+    # Filtering here because Yelp returns results even outside of the distance given >_<
+    Yelp.client.search_by_coordinates(coordinates_hash, params).businesses.select do |business|
+      business.distance <= RADIUS_FILTER
+    end
   end
 
   def self.create_business_from_yelp_response(business)

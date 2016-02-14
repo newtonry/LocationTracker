@@ -1,3 +1,4 @@
+require './constants'
 require './db/environment'  # need for db settings. eventually want to auto-load this probably
 require './models/location_coordinates'
 
@@ -15,8 +16,12 @@ class User < ActiveRecord::Base
     self.actions.count
   end
 
-  def trips_count
-    self.trips.count
+  def travel_count
+    self.actions.where(type_index: LocationCoordinatesActionType.TRAVEL[:index]).count
+  end
+
+  def visit_count
+    self.actions.where(type_index: LocationCoordinatesActionType.VISIT[:index]).count
   end
 end
 

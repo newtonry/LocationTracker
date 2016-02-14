@@ -26,7 +26,6 @@ define([], function() {
 		},
 		
 		addPoint: function(location, color) {
-			console.log(color)
 			color = color || 'FF0000';
 			var mapMarker = location.addMarkerToMap(this.map);
 			mapMarker.setIcon(this.defaultIconUrl + color);

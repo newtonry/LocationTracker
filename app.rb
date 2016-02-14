@@ -61,33 +61,33 @@ get '/api/actions/:id/external-api-data/' do
   external_api_data.to_json
 end
 
-get '/api/google-places/' do
-  content_type :json
-  GooglePlace.includes(:types).all.to_json(include: :types, methods: :number_of_location_coordinates)
-end
+# get '/api/google-places/' do
+#   content_type :json
+#   GooglePlace.includes(:types).all.to_json(include: :types, methods: :number_of_location_coordinates)
+# end
+#
+# get '/api/trips/' do
+#   content_type :json
+#   Trip.all.to_json(
+#     methods: [
+#       :start,
+#       :finish
+#     ]
+#   )
+# end
 
-get '/api/trips/' do
-  content_type :json
-  Trip.all.to_json(
-    methods: [
-      :start,
-      :finish
-    ]
-  )
-end
-
-get '/api/trips/:id/' do
-  content_type :json
-  Trip.includes(:user, location_coordinates: [:types]).find(params['id']).to_json(include: [{
-    location_coordinates: {
-      include: [
-        :google_places,
-        :yelp_businesses,
-        :types
-      ]
-    }
-  }, :user])
-end
+# get '/api/trips/:id/' do
+#   content_type :json
+#   Trip.includes(:user, location_coordinates: [:types]).find(params['id']).to_json(include: [{
+#     location_coordinates: {
+#       include: [
+#         :google_places,
+#         :yelp_businesses,
+#         :types
+#       ]
+#     }
+#   }, :user])
+# end
 
 get '/api/types/' do
   content_type :json
@@ -100,7 +100,8 @@ get '/api/users/' do
   User.all.to_json(methods: [
     :actions_count,
     :location_coordinates_count,
-    :trips_count
+    :travel_count,
+    :visit_count
   ])
 end
 

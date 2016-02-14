@@ -14,7 +14,7 @@ end
 
 class GooglePlace < ActiveRecord::Base
   GOOGLE_PLACES_BASE_URL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json'
-  DEFAULT_RADIUS = 10
+  DEFAULT_RADIUS = 100
 
   has_and_belongs_to_many :types
   has_and_belongs_to_many :location_coordinates, class_name: 'LocationCoordinates'
