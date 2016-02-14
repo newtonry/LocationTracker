@@ -6,13 +6,13 @@ define([], function() {
 			this.listenTo(this.model, 'sync', this.render);
 		},
 		render: function() {
-			this.$el.empty().append(this.template({
-				fetched: !!this.model.fetched
-			}));
+			this.$el.empty();
 			if (!this.model.fetched) {
+				this.$el.append(_.template($('#loading-spinner').html())());				
 				return this;
 			}
 
+			this.$el.append(this.template());
 			var self = this;
 			var foursquareInfoTemplate = _.template($('#external-foursquare-row').html());
 			var googlePlaceInfoTemplate = _.template($('#external-google-row').html());

@@ -23,15 +23,11 @@ define([
 					self.render();
 				}
 			});
+			this.listenTo(this.collection, 'request', function() {self.collection.fetched = false;});
 			this.render();
 		},
 	
-		render: function() {
-			if (!this.collection.fetched) {
-				this.$el.empty().append(_.template($('#loading-spinner').html())());
-				return this;
-			}
-			
+		render: function() {			
 			this.$el.empty().append(this.template());
 
 			// TODO should we not be instantiating these a lot of times?
@@ -41,6 +37,11 @@ define([
 			this.$('.actions-filter').append(this.actionsFilterView.render().$el);
 			this.listenTo(this.actionsFilterView, 'change', this.render)
 
+			if (!this.collection.fetched) {
+				this.$('.actions-table').html(_.template($('#loading-spinner').html())());
+				return this;
+			}
+			
 			var self = this;
 			this.collection.getFilteredActions().each(function(action) {
 				var actionRowView = new ActionRowView({

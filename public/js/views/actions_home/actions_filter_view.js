@@ -16,6 +16,12 @@ define([
 			this.listenTo(this.userCollection, 'sync', this.render)
 		},
 		render: function() {
+			// if (!this.collection.fetched) {
+			// 	this.$el.empty().append(_.template($('#loading-spinner').html())());
+			// 	return this;
+			// }
+
+			
 			this.$el.empty().append(this.template({
 				type_index: this.collection.filters.type_index
 			}));

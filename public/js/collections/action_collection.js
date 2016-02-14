@@ -11,7 +11,7 @@ define([
 			this.filters = {
 				user_id: null,
 				type_index: null				
-			}
+			};
 		},
 		
 		// TODO maybe this should just be part of an api call?

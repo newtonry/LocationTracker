@@ -28,11 +28,13 @@ define([
 			this.model = new ActionModel({
 				id: options.id
 			});
-		
+			var self = this;
 			this.model.fetch({
-				success: this.render.bind(this)
+				success: function() {
+					self.model.fetched = true;
+					self.render();
+				}
 			});
-
 			this.externalActionData = new ExternalActionDataModel({
 				id: this.model.get('id')
 			});
@@ -40,6 +42,12 @@ define([
 	
 		render: function() {
 			this.$el.empty();
+			
+			if (!this.model.fetched) {
+				this.$el.append(_.template($('#loading-spinner').html())());
+				return this;
+			}
+			
 			this.$el.append(this.template(
 				_.extend(this.model.toJSON(), {activeView: this.activeView})
 			));
