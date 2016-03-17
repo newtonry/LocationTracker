@@ -6,7 +6,7 @@ class Action < ActiveRecord::Base
 
   has_many :location_coordinates, class_name: 'LocationCoordinates'
   belongs_to :user
-  
+
 
   VISIT_DISTANCE_MAX = 1000  # Number of meters in which something should be considered the same location or not
   MINIMUM_TIME = 15  # Number of minutes which a user must stay within the location for it to be considered a visit

@@ -1,0 +1,39 @@
+<script type="text/html" id="visits-home">
+	<h2 class="col-md-12">Visits</h2>
+	<div class='visits-filter col-md-12'></div>
+	<div class='col-md-8 pull-left'>
+		<table class="table visits-table">
+			<thead>
+				<tr>
+					<th class='col-md-1'>Id</th>
+					<th class='col-md-1'>User</th>					
+					<th class='col-md-2'>Recorded Time Spent</th>
+					<th class='col-md-2'>Arrival Time</th>					
+					<th class='col-md-1'>Departure Time</th>
+					<th class='col-md-1'>Location</th>					
+					<th class='col-md-2'>Accuracy</th>
+				</tr>				
+			</thead>
+		<tbody></tbody>
+		</table>
+	</div>
+	<div id="map" class="pull-left col-md-4"></div>
+</script>
+
+<script type="text/html" id="visit-row">
+	<td class='col-md-1'>{{= id }}</td>
+	<td class='col-md-1'>{{= user.get('username') }}</td>	
+	<td class='col-md-2'>{{= time_spent }} mins</td>
+	<td class='col-md-1'>{{= arrival_date.toTimeString().split(' ')[0] }}</td>
+	<td class='col-md-1'>{{= departure_date.toTimeString().split(' ')[0] }}</td>
+	<td class='col-md-2'><a href="#" data-action="selectPointOnMap">{{= location_coordinates.toCoordinateString() }}</a></td>
+	<td class='col-md-2'>{{= horizontal_accuracy }}</td>
+</script>
+
+<script type="text/html" id="visits-filter">
+	<div class='form-group col-md-1'>
+	  <select class="user-selection form-control pull-left">
+	    <option value="all_users">All Users</option>
+	  </select>
+	</div>
+</script>

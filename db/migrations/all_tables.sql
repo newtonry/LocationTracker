@@ -9,7 +9,17 @@ DROP TABLE IF EXISTS types_yelp_businesses;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS yelp_businesses;
 
-
+CREATE TABLE visits(
+	id INTEGER,
+	user_id INTEGER,
+	parse_id TEXT,
+	lat REAL,
+	lng REAL,
+	arrival_date TEXT,
+	departure_date TEXT,
+	horizontal_accuracy REAL,
+	PRIMARY KEY(id)		
+);
 
 CREATE TABLE actions(
 	id INTEGER,
@@ -69,6 +79,7 @@ CREATE TABLE location_coordinates(
 	time_visited TEXT,
 	action_id INTEGER,
 	trip_id INTEGER,
+	horizontal_accuracy REAL,
 	PRIMARY KEY(id)
 );
 

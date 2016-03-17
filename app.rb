@@ -10,6 +10,7 @@ require './models/location_coordinates'
 require './models/trip'
 require './models/type'
 require './models/user'
+require './models/visit'
 require './models/yelp_business'
 
 
@@ -60,6 +61,20 @@ get '/api/actions/:id/external-api-data/' do
   }
   external_api_data.to_json
 end
+
+get '/api/visits/' do
+  content_type :json  
+  Visit.all.includes(:user).to_json({
+    methods: [
+      :location_coordinates,
+      :time_spent
+    ],
+    include: :user
+  })
+
+end
+
+
 
 # get '/api/google-places/' do
 #   content_type :json

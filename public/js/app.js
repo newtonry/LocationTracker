@@ -2,18 +2,16 @@ require([
 	'./views/action_individual/action_individual_view',	
 	'./views/actions_home/actions_home_view',
 	'./views/google_places_home_view',
-	// './views/trips_home_view',
-	// './views/trip_individual_view',
 	'./views/types_home/types_view',
-	'./views/users_home/users_view'	
+	'./views/users_home/users_view',
+	'./views/visits_home/visits_view'	
 ], function(
 	ActionIndividualView,
 	ActionsHomeView,
 	GooglePlacesHomeView,
-	// TripsHomeView,
-	// TripIndividualView,
 	TypesView,
-	UsersView
+	UsersView,
+	VisitsView
 ) {
 	$(document).ready(function() {
 
@@ -23,10 +21,10 @@ require([
 				"actions/": "actions",
 		        "actions/:id": "action",
 				"google-places/": "googlePlaces",
-				// "trips/": "trips",
 		        "trips/:id": "trip",
 		        "types/": "types",
-				"users/": "users"
+				"users/": "users",
+				"visits/": "visits"
 		    },
 		    action: function(id) {
 				var actionIndividualView = new ActionIndividualView({
@@ -44,17 +42,6 @@ require([
 					el: $('#main-container')
 				});				
 			},
-				// 		    trip: function(id) {
-				// var tripIndividualView = new TripIndividualView({
-				// 	el: $('#main-container'),
-				// 	id: id
-				// });
-				// 		    },
-				// 		    trips: function() {
-				// var tripsHomeView = new TripsHomeView({
-				// 	el: $('#main-container')
-				// });
-				// 		    },
 			types: function() {
 				var typesView = new TypesView({
 					el: $('#main-container')
@@ -62,6 +49,11 @@ require([
 			},
 			users: function() {
 				var usersView = new UsersView({
+					el: $('#main-container')
+				});
+			},
+			visits: function() {
+				var visitsView = new VisitsView({
 					el: $('#main-container')
 				});
 			}
